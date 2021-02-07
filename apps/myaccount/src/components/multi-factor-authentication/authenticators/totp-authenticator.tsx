@@ -17,10 +17,11 @@
  */
 
 import { TestableComponentInterface } from "@wso2is/core/models";
+import { CommonUtils } from "@wso2is/core/utils";
 import { Field, Forms, useTrigger } from "@wso2is/forms";
 import { GenericIcon } from "@wso2is/react-components";
 import QRCode from "qrcode.react";
-import React, { PropsWithChildren, useEffect, useState } from "react";
+import React, {PropsWithChildren, useEffect, useRef, useState} from "react";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { Button, Divider, Grid, Icon, List, Message, Modal, Popup, Segment } from "semantic-ui-react";
@@ -64,7 +65,25 @@ export const TOTPAuthenticator: React.FunctionComponent<TOTPProps> = (
     const totpConfig = useSelector((state: AppState) => state?.config?.ui?.authenticatorApp);
 
     const translateKey = "myAccount:components.mfa.authenticatorApp.";
+/*
+    const errorNotification = useRef(null);
 
+    const scrollToBottom = () => {
+        errorNotification.current.scrollIntoView({ behavior: "smooth" });
+    };
+
+    useEffect(() => {
+        if (error) {
+            // scrollToBottom();
+            /!*window.scrollTo({
+                behavior: "smooth",
+                top: 500
+            });*!/
+            /!*CommonUtils.scrollToTarget(
+                errorNotification.current, 500
+            );*!/
+        }
+    }, [error]);*/
     /**
      * Reset error and step when the modal is closed
      */
@@ -176,9 +195,21 @@ export const TOTPAuthenticator: React.FunctionComponent<TOTPProps> = (
                 </div>
                 <div className="stepper">
                     <div className="step-number">2</div>
-                    <div className="stepper-text">
+                    <div className="step-text">
                         <h5>{ t(translateKey + "modals.verify.heading") }</h5>
-                        <Segment basic>
+                        <Segment basic className="pl-0">
+                        {
+                            error
+                                ? (
+                                <>
+                                    <Message
+                                        error data-testid={ `${ testId }-code-verification-form-field-error` }>
+                                        { t(translateKey + "modals.verify.error") }
+                                    </Message>
+                                </>
+                                )
+                                : null
+                        }
                         <Forms
                             data-testid={ `${ testId }-code-verification-form` }
                             onSubmit={ (values: Map<string, string>) => {
@@ -196,18 +227,6 @@ export const TOTPAuthenticator: React.FunctionComponent<TOTPProps> = (
                                 requiredErrorMessage={ t(translateKey + "modals.verify.requiredError") }
                             />
                         </Forms>
-                        {
-                            error
-                                ? (
-
-                                    <>
-                                        <Message error data-testid={ `${ testId }-code-verification-form-field-error` }>
-                                            { t(translateKey + "modals.verify.error") }
-                                        </Message>
-                                    </>
-                                )
-                                : null
-                            }
                         </Segment>
                     </div>
                 </div>
