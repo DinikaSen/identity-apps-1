@@ -569,7 +569,7 @@ export const myAccount: MyAccountNS = {
                         reScanQuestion: "Voulez-vous scanner le code QR à nouveau ?",
                         requiredError: "Veuillez entrer votre code de vérification"
                     },
-                    toolTip: "Vous n'avez pas d'application? Téléchargez une application d'authentification " + 
+                    toolTip: "Vous n'avez pas d'application? Téléchargez une application d'authentification " +
                     "telle que Google Authenticator depuis <3> App Store </3> ou <3> Google Play </3>"
                 },
                 notifications: {
@@ -1072,7 +1072,14 @@ export const myAccount: MyAccountNS = {
                             }
                         }
                     }
-                }
+                },
+                countryChangeForm: {
+                    inputs: {
+                        country: {
+                            placeholder: "Sélectionnez votre pays"
+                        }
+                    }
+                },
             },
             messages: {
                 emailConfirmation: {
