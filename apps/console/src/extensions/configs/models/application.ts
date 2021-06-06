@@ -65,6 +65,11 @@ export interface ApplicationConfig {
         showReturnAuthenticatedIdPList: boolean;
         disabledGrantTypes: string[];
     };
+    inboundSAMLForm: {
+        showApplicationQualifier: boolean;
+        showAttributeConsumingServiceIndex: boolean;
+        showQueryRequestProfile: boolean;
+    },
     infoSettings: {
         renderInfoTabExtension: () => ReactNode
     };
