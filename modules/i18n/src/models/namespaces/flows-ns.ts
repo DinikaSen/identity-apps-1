@@ -124,6 +124,7 @@ export interface flowsNS {
                 microsoft: string;
                 passkeyEnrollment: string;
                 magicLink: string;
+                daon: string;
             };
             tooltip: {
                 configurationHint: string;

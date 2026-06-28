@@ -18,6 +18,7 @@
 
 import { TreeViewBaseItem } from "@mui/x-tree-view/models";
 import { RichTreeView } from "@mui/x-tree-view/RichTreeView";
+import { TreeItemCheckbox } from "@mui/x-tree-view/TreeItem";
 import Alert from "@oxygen-ui/react/Alert";
 import Autocomplete, {
     AutocompleteChangeDetails,
@@ -66,6 +67,7 @@ import isEmpty from "lodash-es/isEmpty";
 import React, {
     ChangeEvent,
     Dispatch as ReactDispatch,
+    ReactElement,
     ReactNode,
     SetStateAction,
     SyntheticEvent,
@@ -926,6 +928,62 @@ const SelectiveOrgShareWithSelectiveRoles = (props: SelectiveOrgShareWithSelecti
         }
     };
 
+    /**
+     * Determines whether an organization node should be non-selectable in the tree.
+     *
+     * In user and agent sharing the server shares with the immediate child organizations of the
+     * sharing-initiated organization only; deeper descendants in the request are silently skipped.
+     * Disabling their checkboxes keeps the tree consistent with what is actually shared and avoids
+     * the confusion of selecting an organization that never gets shared. To reach deeper
+     * organizations, the direct sub-organization is selected with sharing extended to its children.
+     *
+     * Only the checkbox/selection is disabled (via `isItemSelectionDisabled`); the node can still be
+     * expanded and clicked, so deeper organizations remain viewable.
+     *
+     * This applies to user and agent sharing only (both identified by `userId`). Application and
+     * console sharing (no `userId`) support nested organizations and are unaffected, as is the
+     * read-only view (`disableOrgSelection`).
+     *
+     * @param orgId - The organization ID of the tree node.
+     * @returns `true` if the node's selection should be disabled.
+     */
+    const isOrgSelectionDisabled = (orgId: string): boolean => {
+        if (isEmpty(userId) || disableOrgSelection) {
+            return false;
+        }
+
+        const parentId: string | undefined = flatOrganizationMap[orgId]?.parentId;
+
+        // Immediate children of the current organization have parentId === organizationId.
+        return !isEmpty(parentId) && parentId !== organizationId;
+    };
+
+    /**
+     * Custom checkbox slot for the organization tree.
+     *
+     * For non-immediate organizations the tree marks the item non-selectable (via
+     * `isItemSelectionDisabled`), which by default hides the checkbox entirely (the Tree View passes
+     * `visible: false`, and the default checkbox slot renders `null` in that case). This slot reuses
+     * the Tree View's own `TreeItemCheckbox` (the same component used for selectable items) but forces
+     * `visible` to `true`, so deeper organizations show a disabled checkbox — the Tree View already
+     * sets `disabled: true` on them — instead of an empty gap, while remaining expandable and clickable
+     * for viewing. Reusing `TreeItemCheckbox` keeps the disabled checkbox visually identical to the
+     * selectable ones and correctly forwards the ref the Tree View injects. In the read-only view
+     * (`disableOrgSelection`) no checkboxes are shown.
+     *
+     * @param checkboxSlotProps - Props injected by the Tree View for the checkbox slot.
+     * @returns The rendered checkbox, or `null` when no checkbox should be shown.
+     */
+    const renderSelectionCheckbox = (
+        checkboxSlotProps: React.HTMLAttributes<HTMLButtonElement> & { visible?: boolean }
+    ): ReactElement | null => {
+        if (disableOrgSelection) {
+            return null;
+        }
+
+        return <TreeItemCheckbox { ...checkboxSlotProps } visible={ true } />;
+    };
+
     const loadMoreOrganizations = (): void => {
         const cursorFragments: string[] = nextPageLink?.split("after=");
 
@@ -1621,6 +1679,8 @@ const SelectiveOrgShareWithSelectiveRoles = (props: SelectiveOrgShareWithSelecti
                                             selectedItems={ disableOrgSelection ? selectedOrgId : selectedItems }
                                             checkboxSelection={ !disableOrgSelection }
                                             disableSelection={ disableOrgSelection }
+                                            isItemSelectionDisabled={ (item: TreeViewBaseItemWithRoles) =>
+                                                isOrgSelectionDisabled(item.id) }
                                             multiSelect={ !disableOrgSelection }
                                             selectionPropagation={ {
                                                 descendants: false,
@@ -1628,6 +1688,13 @@ const SelectiveOrgShareWithSelectiveRoles = (props: SelectiveOrgShareWithSelecti
                                             } }
                                             slots={ {
                                                 item: CustomTreeItem
+                                            } }
+                                            slotProps={ {
+                                                item: {
+                                                    slots: {
+                                                        checkbox: renderSelectionCheckbox
+                                                    }
+                                                }
                                             } }
                                         />
                                     </InfiniteScroll>

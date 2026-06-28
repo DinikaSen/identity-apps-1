@@ -73,6 +73,7 @@ export enum ExecutionTypes {
     PasskeyEnrollment = "FIDO2Executor",
     ConfirmationCode = "ConfirmationCodeValidationExecutor",
     MagicLinkExecutor = "MagicLinkExecutor",
+    DaonExecutor = "DaonExecutor",
     FlowExtension = "FlowExtensionExecutor"
 }
 

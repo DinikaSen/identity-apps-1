@@ -108,6 +108,7 @@ export const flows: flowsNS = {
             names: {
                 apple: "Apple",
                 confirmationCode: "Confirmation Code",
+                daon: "Identity Verification",
                 default: "Execution",
                 facebook: "Facebook",
                 flowExtension: "Flow Extension",
@@ -115,7 +116,7 @@ export const flows: flowsNS = {
                 google: "Google",
                 magicLink: "Magic Link",
                 microsoft: "Microsoft",
-                passkeyEnrollment: "Enroll Passkey"
+                passkeyEnrollment: "Enroll Passkey",
             },
             tooltip: {
                 configurationHint: "Configure"
