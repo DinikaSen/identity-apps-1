@@ -19,7 +19,7 @@
 import { amber, blue, deepOrange, green, indigo, orange, purple, teal } from "@mui/material/colors";
 import { Theme, styled, useTheme } from "@mui/material/styles";
 import Box from "@oxygen-ui/react/Box";
-import CircularProgress from "@oxygen-ui/react/CircularProgress";
+import Skeleton from "@oxygen-ui/react/Skeleton";
 import Typography from "@oxygen-ui/react/Typography";
 import useSubscription, { UseSubscriptionInterface } from "@wso2is/admin.subscription.v1/hooks/use-subscription";
 import React, {
@@ -104,17 +104,34 @@ const CanvasContainer: typeof Box = styled(Box)(() => ({
 }));
 
 const LoaderOverlay: typeof Box = styled(Box)(({ theme }: { theme: Theme }) => ({
-    alignItems: "center",
     backgroundColor: theme.palette.background.paper,
-    display: "flex",
     height: "100%",
-    justifyContent: "center",
     left: 0,
+    overflow: "hidden",
+    padding: theme.spacing(2),
     position: "absolute",
     top: 0,
     width: "100%",
     zIndex: 10
 }));
+
+const SkeletonGrid: typeof Box = styled(Box)(({ theme }: { theme: Theme }) => ({
+    display: "grid",
+    gap: theme.spacing(2),
+    gridTemplateColumns: "repeat(auto-fill, minmax(280px, 1fr))",
+    marginTop: theme.spacing(2)
+}));
+
+const SkeletonCard: typeof Box = styled(Box)(({ theme }: { theme: Theme }) => ({
+    border: `1px solid ${ theme.palette.divider }`,
+    borderRadius: `${ theme.shape.borderRadius }px`,
+    padding: theme.spacing(2)
+}));
+
+/**
+ * Number of placeholder chart cards rendered while the embedded dashboard loads.
+ */
+const SKELETON_CARD_COUNT: number = 6;
 
 /**
  * Props for the MoesifCanvasIframe component.
@@ -344,7 +361,20 @@ const MoesifCanvasIframe: FunctionComponent<MoesifCanvasIframePropsInterface> = 
         <CanvasContainer data-componentid={ componentId }>
             { (isLoading || !dashboardInfo) && (
                 <LoaderOverlay data-componentid={ `${ componentId }-loader` }>
-                    <CircularProgress size={ 40 } />
+                    <Skeleton variant="text" animation="wave" width={ 200 } height={ 32 } />
+                    <SkeletonGrid>
+                        { Array.from({ length: SKELETON_CARD_COUNT }).map((_: unknown, index: number) => (
+                            <SkeletonCard key={ `canvas-skeleton-card-${ index }` }>
+                                <Skeleton variant="text" animation="wave" width="40%" />
+                                <Skeleton
+                                    variant="rectangular"
+                                    animation="wave"
+                                    height={ 180 }
+                                    sx={ { borderRadius: 1, mt: 1 } }
+                                />
+                            </SkeletonCard>
+                        )) }
+                    </SkeletonGrid>
                 </LoaderOverlay>
             ) }
             { dashboardInfo && (
