@@ -1,5 +1,11 @@
 # @wso2is/admin.consents.v1
 
+## 1.0.5
+
+### Patch Changes
+
+- [#10510](https://github.com/wso2/identity-apps/pull/10510) [`bf190fa121109406797185168bb6a7bce6a027d5`](https://github.com/wso2/identity-apps/commit/bf190fa121109406797185168bb6a7bce6a027d5) Thanks [@hwupathum](https://github.com/hwupathum)! - Fix form reset on name field when claims load in create mode
+
 ## 1.0.4
 
 ### Patch Changes
