@@ -1,5 +1,11 @@
 # @wso2is/admin.analytics.v1
 
+## 0.0.13
+
+### Patch Changes
+
+- [#10512](https://github.com/wso2/identity-apps/pull/10512) [`503da6fb142a3a6db47e3014fe68c7bdf4d2aae3`](https://github.com/wso2/identity-apps/commit/503da6fb142a3a6db47e3014fe68c7bdf4d2aae3) Thanks [@bhagyasakalanka](https://github.com/bhagyasakalanka)! - Pass the product name and subscription plan to the Moesif embedded canvas URL
+
 ## 0.0.12
 
 ### Patch Changes
