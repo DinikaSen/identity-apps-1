@@ -21,6 +21,7 @@ import { Theme, styled, useTheme } from "@mui/material/styles";
 import Box from "@oxygen-ui/react/Box";
 import Skeleton from "@oxygen-ui/react/Skeleton";
 import Typography from "@oxygen-ui/react/Typography";
+import { AppState } from "@wso2is/admin.core.v1/store";
 import useSubscription, { UseSubscriptionInterface } from "@wso2is/admin.subscription.v1/hooks/use-subscription";
 import React, {
     FunctionComponent,
@@ -32,8 +33,9 @@ import React, {
     useState
 } from "react";
 import { useTranslation } from "react-i18next";
+import { useSelector } from "react-redux";
 import { getMoesifDashboardInfo } from "../api/get-moesif-dashboard-info";
-import { MoesifDashboardConstants } from "../constants/moesif-dashboard-constants";
+import { MoesifDashboardConstants, MoesifDashboardPlan } from "../constants/moesif-dashboard-constants";
 import { MoesifDashboardInfoInterface } from "../models/moesif-analytics";
 
 /**
@@ -143,7 +145,8 @@ interface MoesifCanvasIframePropsInterface {
     "data-componentid"?: string;
     /**
      * Base URL of the Moesif Embedded Portal, e.g. `https://www.moesif.com`.
-     * The iframe is loaded at `{embeddingDomain}/wrap/app/{orgId}-{appId}/canvas#auth=post`.
+     * The iframe is loaded at
+     * `{embeddingDomain}/wrap/app/{orgId}-{appId}/product={product}&plan={plan}canvas#auth=post`.
      */
     embeddingDomain: string;
 }
@@ -169,6 +172,7 @@ const MoesifCanvasIframe: FunctionComponent<MoesifCanvasIframePropsInterface> = 
     const { t } = useTranslation();
     const theme: Theme = useTheme();
     const { tierName }: UseSubscriptionInterface = useSubscription();
+    const productName: string = useSelector((state: AppState) => state?.config?.ui?.productName) ?? "";
 
     const [ dashboardInfo, setDashboardInfo ] = useState<MoesifDashboardInfoInterface | null>(null);
     const [ isLoading, setIsLoading ] = useState<boolean>(true);
@@ -189,6 +193,13 @@ const MoesifCanvasIframe: FunctionComponent<MoesifCanvasIframePropsInterface> = 
     // and swaps the dashboards live.
     const template: Record<string, unknown> = useMemo(
         () => MoesifDashboardConstants.getTemplate(tierName),
+        [ tierName ]
+    );
+
+    // Plan identifier for the canvas URL, resolved from the subscription tier
+    // with the same tier-to-template mapping used to pick the dashboard set.
+    const plan: MoesifDashboardPlan = useMemo(
+        () => MoesifDashboardConstants.getPlan(tierName),
         [ tierName ]
     );
 
@@ -353,8 +364,11 @@ const MoesifCanvasIframe: FunctionComponent<MoesifCanvasIframePropsInterface> = 
         );
     }
 
+    // The product name can contain spaces (e.g. "WSO2 Identity Platform"), so
+    // it is URL-encoded before being placed in the canvas URL.
     const iframeSrc: string = dashboardInfo
-        ? `${ embeddingDomain }/wrap/app/${ dashboardInfo.moesifOrgId }-${ dashboardInfo.moesifAppId }/canvas#auth=post`
+        ? `${ embeddingDomain }/wrap/app/${ dashboardInfo.moesifOrgId }-${ dashboardInfo.moesifAppId }`
+            + `/product=${ encodeURIComponent(productName) }&plan=${ plan }canvas#auth=post`
         : "";
 
     return (
