@@ -146,7 +146,7 @@ interface MoesifCanvasIframePropsInterface {
     /**
      * Base URL of the Moesif Embedded Portal, e.g. `https://www.moesif.com`.
      * The iframe is loaded at
-     * `{embeddingDomain}/wrap/app/{orgId}-{appId}/product={product}&plan={plan}canvas#auth=post`.
+     * `{embeddingDomain}/wrap/app/{orgId}-{appId}/canvas?product={product}&plan={plan}#auth=post`.
      */
     embeddingDomain: string;
 }
@@ -368,7 +368,7 @@ const MoesifCanvasIframe: FunctionComponent<MoesifCanvasIframePropsInterface> = 
     // it is URL-encoded before being placed in the canvas URL.
     const iframeSrc: string = dashboardInfo
         ? `${ embeddingDomain }/wrap/app/${ dashboardInfo.moesifOrgId }-${ dashboardInfo.moesifAppId }`
-            + `/product=${ encodeURIComponent(productName) }&plan=${ plan }canvas#auth=post`
+            + `/canvas?product=${ encodeURIComponent(productName) }&plan=${ plan }#auth=post`
         : "";
 
     return (
