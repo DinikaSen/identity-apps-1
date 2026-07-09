@@ -71,6 +71,17 @@ export interface SMSTemplatesNS {
                 hint: string;
             };
             locale: {
+                groups: {
+                    default: {
+                        heading: string;
+                        hint: string;
+                        subHeading: string;
+                    };
+                    other: {
+                        heading: string;
+                        subHeading: string;
+                    };
+                };
                 label: string;
                 placeholder: string;
             };
