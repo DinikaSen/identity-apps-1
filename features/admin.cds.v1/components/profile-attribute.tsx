@@ -47,6 +47,7 @@ import { RouteComponentProps } from "react-router";
 import { Dispatch } from "redux";
 import { Grid, Icon, Image, Label, Message, TabProps } from "semantic-ui-react";
 import { deleteSchemaAttributeById, updateSchemaAttributeById } from "../api/profile-attributes";
+import { useCDSApplications } from "../hooks/use-cds-applications";
 import { useSchemaAttributeById } from "../hooks/use-profile-attributes";
 import { useSearchSubAttributes } from "../hooks/use-search-sub-attributes";
 import { SCOPE_CONFIG, SchemaListingScope } from "../models/profile-attribute-listing";
@@ -109,6 +110,8 @@ const ProfileAttributeEditPage: FunctionComponent<RouteComponentProps<RouteParam
     const [ attribute, setAttribute ] = useState<ProfileSchemaAttribute>(null);
     const [ subAttributes, setSubAttributes ] = useState<ProfileSchemaSubAttributeRef[]>([]);
     const [ currentValueType, setCurrentValueType ] = useState<ValueType>(null);
+
+    const { getApplicationDisplayName } = useCDSApplications(scope === "application_data");
 
     // Canonical values editor
     const [ canonicalValues, setCanonicalValues ] = useState<CanonicalValues[]>([]);
@@ -481,12 +484,12 @@ const ProfileAttributeEditPage: FunctionComponent<RouteComponentProps<RouteParam
                                 <Grid.Row columns={ 1 }>
                                     <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
                                         <Field.Input
-                                            ariaLabel="Application identifier"
+                                            ariaLabel="Application"
                                             inputType="default"
                                             name="application_identifier_display"
                                             label={ t("customerDataService:profileAttributes.edit."+
                                                 "fields.applicationIdentifier.label") }
-                                            value={ attribute.application_identifier }
+                                            value={ getApplicationDisplayName(attribute.application_identifier) }
                                             readOnly
                                             maxLength={ 200 }
                                             minLength={ 3 }
@@ -777,7 +780,8 @@ const ProfileAttributeEditPage: FunctionComponent<RouteComponentProps<RouteParam
             isUpdating,
             isDeleting,
             isLoadingSubAttrs,
-            currentValueType
+            currentValueType,
+            getApplicationDisplayName
         ]
     );
 

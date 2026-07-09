@@ -100,6 +100,7 @@ export interface CustomerDataServiceNS {
                             label: string;
                             loading: string;
                             noOptions: string;
+                            placeholder: string;
                             validations: {
                                 empty: string;
                             };

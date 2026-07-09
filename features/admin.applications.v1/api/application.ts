@@ -215,6 +215,8 @@ export const updateApplicationDetails = (
  * @param limit - Maximum Limit of the application List.
  * @param offset - Offset for get to start.
  * @param filter - Search filter.
+ * @param excludeSystemPortals - Whether to exclude system portal applications.
+ * @param attributes - Additional attributes to include in the response (comma-separated).
  *
  * @returns A promise containing the response.
  */
@@ -222,7 +224,8 @@ export const getApplicationList = (
     limit: number,
     offset: number,
     filter: string,
-    excludeSystemPortals:boolean = false
+    excludeSystemPortals:boolean = false,
+    attributes?: string
 ): Promise<ApplicationListInterface> => {
     const requestConfig: AxiosRequestConfig = {
         headers: {
@@ -232,6 +235,7 @@ export const getApplicationList = (
         },
         method: HttpMethods.GET,
         params: {
+            attributes,
             excludeSystemPortals,
             filter,
             limit,
