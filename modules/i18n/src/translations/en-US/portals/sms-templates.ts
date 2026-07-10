@@ -41,21 +41,6 @@ export const smsTemplates: SMSTemplatesNS = {
                 label: "SMS Body",
                 placeholder: "Enter the SMS content"
             },
-            locale: {
-                groups: {
-                    default: {
-                        heading: "Built-in Languages",
-                        hint: "These languages are supported across all user-facing authentication, account recovery screens and My Account portal.",
-                        subHeading: "Languages supported by default"
-                    },
-                    other: {
-                        heading: "Additional Languages",
-                        subHeading: "Other languages available for this template"
-                    }
-                },
-                label: "Locale",
-                placeholder: "Select Locale"
-            },
             template: {
                 hint: "Select the SMS template",
                 label: "SMS Template",

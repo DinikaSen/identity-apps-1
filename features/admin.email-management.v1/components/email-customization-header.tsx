@@ -16,48 +16,18 @@
  * under the License.
  */
 
-import { Theme, styled } from "@mui/material/styles";
-import Autocomplete, {
-    AutocompleteRenderGroupParams,
-    AutocompleteRenderInputParams
-} from "@oxygen-ui/react/Autocomplete";
-import Box from "@oxygen-ui/react/Box";
-import Divider from "@oxygen-ui/react/Divider";
-import TextField from "@oxygen-ui/react/TextField";
-import Typography from "@oxygen-ui/react/Typography";
-import { AppState } from "@wso2is/admin.core.v1/store";
+import GroupedLocaleAutocomplete, { LocaleOption } from "@wso2is/admin.core.v1/components/grouped-locale-autocomplete";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
-import { CommonUtils } from "@wso2is/core/utils";
-import { DropdownChild, Field, Form } from "@wso2is/forms";
-import { SupportedLanguagesMeta } from "@wso2is/i18n";
-import { Hint } from "@wso2is/react-components";
-import React, { FunctionComponent, ReactElement, SyntheticEvent, useEffect, useMemo, useState } from "react";
+import { Field, Form } from "@wso2is/forms";
+import React, { FunctionComponent, ReactElement, useMemo } from "react";
 import { useTranslation } from "react-i18next";
-import { useSelector } from "react-redux";
-import { Grid, Header, Segment } from "semantic-ui-react";
+import { Grid, Segment } from "semantic-ui-react";
 import { EmailTemplateType } from "../models";
 import "./email-customization-header.scss";
 
+export type { LocaleOption };
+
 const FORM_ID: string = "email-customization-header-form";
-
-const LocaleGroupHeader: typeof Box = styled(Box)(({ theme }: { theme: Theme }) => ({
-    display: "flex",
-    flexDirection: "column",
-    gap: theme.spacing(0.25),
-    padding: theme.spacing(1, 2, 0.5, 2)
-}));
-
-const LocaleGroupDivider: typeof Divider = styled(Divider)(({ theme }: { theme: Theme }) => ({
-    borderBottomWidth: 2,
-    marginBlock: theme.spacing(1),
-    marginInline: theme.spacing(2)
-}));
-
-const LocaleGroupSubHeading: typeof Box = styled(Box)(({ theme }: { theme: Theme }) => ({
-    alignItems: "center",
-    display: "flex",
-    gap: theme.spacing(0.5)
-}));
 
 interface EmailCustomizationHeaderProps extends IdentifiableComponentInterface {
     /**
@@ -93,11 +63,6 @@ interface EmailCustomizationHeaderProps extends IdentifiableComponentInterface {
     onLocaleChanged: (localeOption: LocaleOption | null | undefined) => void;
 }
 
-export type LocaleOption = DropdownChild & {
-    name: string;
-    isDefaultLocale?: boolean;
-};
-
 /**
  * Email customization header.
  *
@@ -117,15 +82,6 @@ const EmailCustomizationHeader: FunctionComponent<EmailCustomizationHeaderProps>
 
     const { t } = useTranslation();
 
-    const [ localeList, setLocaleList ] =
-        useState<LocaleOption[]>([]);
-
-    const supportedI18nLanguagesFromStore: SupportedLanguagesMeta = useSelector(
-        (state: AppState) => state.global.supportedI18nLanguages
-    );
-
-    const allSupportedLocales: SupportedLanguagesMeta = CommonUtils.getLocaleList();
-
     const emailTemplateListOptions: { text: string, value: string }[] = useMemo(() => {
         return emailTemplatesList?.map((template: EmailTemplateType) => {
             return {
@@ -134,41 +90,6 @@ const EmailCustomizationHeader: FunctionComponent<EmailCustomizationHeaderProps>
             };
         });
     }, [ emailTemplatesList ]);
-
-    useEffect(() => {
-        if (!allSupportedLocales) {
-            return;
-        }
-
-        const toLocaleOption: (locale: { code: string; name: string; flag: string }, isDefaultLocale: boolean) =>
-            LocaleOption = (locale: { code: string; name: string; flag: string }, isDefaultLocale: boolean) => ({
-                isDefaultLocale,
-                key: locale.code,
-                name: `${ locale.name }, ${ locale.code }`,
-                text: (
-                    <div>
-                        <i className={ locale.flag + " flag" }></i>
-                        { locale.name }, { locale.code }
-                    </div>
-                ),
-                value: locale.code
-            });
-
-        const defaultLocaleCodes: Set<string> = new Set(
-            Object.values(supportedI18nLanguagesFromStore ?? {}).map(
-                (locale: { code: string }) => locale.code
-            )
-        );
-
-        const defaultLocaleList: LocaleOption[] = Object.values(supportedI18nLanguagesFromStore ?? {})
-            .map((locale: { code: string; name: string; flag: string }) => toLocaleOption(locale, true));
-
-        const otherLocaleList: LocaleOption[] = Object.values(allSupportedLocales)
-            .filter((locale: { code: string }) => !defaultLocaleCodes.has(locale.code))
-            .map((locale: { code: string; name: string; flag: string }) => toLocaleOption(locale, false));
-
-        setLocaleList([ ...defaultLocaleList, ...otherLocaleList ]);
-    }, [ allSupportedLocales, supportedI18nLanguagesFromStore ]);
 
     return (
         <Segment
@@ -204,108 +125,11 @@ const EmailCustomizationHeader: FunctionComponent<EmailCustomizationHeaderProps>
                         mobile={ 16 }
                         computer={ 8 }
                     >
-                        <Autocomplete
-                            disablePortal
-                            fullWidth
-                            aria-label="Email Template Locale Dropdown"
-                            className="pt-1"
-                            ListboxProps={ {
-                                sx: { maxHeight: "60vh" }
-                            } }
-                            componentsProps={ {
-                                paper: {
-                                    elevation: 2
-                                },
-                                popper: {
-                                    modifiers: [
-                                        {
-                                            enabled: false,
-                                            name: "flip"
-                                        },
-                                        {
-                                            enabled: false,
-                                            name: "preventOverflow"
-                                        }
-                                    ]
-                                }
-                            } }
-                            data-componentid={ `${componentId}-api` }
-                            isOptionEqualToValue={
-                                (option: LocaleOption, value: LocaleOption) =>
-                                    option.value === value.value
-                            }
-                            getOptionLabel={ (option: LocaleOption) => {
-                                return option?.name;
-                            } }
-                            options={ localeList }
-                            groupBy={ (option: LocaleOption) =>
-                                option.isDefaultLocale ? "default" : "other"
-                            }
-                            renderGroup={ (params: AutocompleteRenderGroupParams) => (
-                                <li key={ params.key }>
-                                    { params.group === "other" && <LocaleGroupDivider /> }
-                                    <LocaleGroupHeader>
-                                        <Typography variant="subtitle2" fontWeight={ 600 } lineHeight={ 1.3 }>
-                                            { params.group === "default"
-                                                ? t("extensions:develop.emailTemplates.form.inputs.locale" +
-                                                    ".groups.default.heading")
-                                                : t("extensions:develop.emailTemplates.form.inputs.locale" +
-                                                    ".groups.other.heading") }
-                                        </Typography>
-                                        <LocaleGroupSubHeading>
-                                            <Typography variant="caption" color="text.secondary" lineHeight={ 1.3 }>
-                                                { params.group === "default"
-                                                    ? t("extensions:develop.emailTemplates.form.inputs.locale" +
-                                                        ".groups.default.subHeading")
-                                                    : t("extensions:develop.emailTemplates.form.inputs.locale" +
-                                                        ".groups.other.subHeading") }
-                                            </Typography>
-                                            { params.group === "default" && (
-                                                <Hint className="mt-0 mb-0" popup>
-                                                    { t("extensions:develop.emailTemplates.form.inputs" +
-                                                        ".locale.groups.default.hint") }
-                                                </Hint>
-                                            ) }
-                                        </LocaleGroupSubHeading>
-                                    </LocaleGroupHeader>
-                                    <ul className="p-0">{ params.children }</ul>
-                                </li>
-                            ) }
-                            onChange={ (
-                                _event: SyntheticEvent<HTMLElement>,
-                                localeOption: LocaleOption | null
-                            ) => {
-                                onLocaleChanged(localeOption);
-                            } }
-                            noOptionsText={ t("common:noResultsFound") }
-                            renderInput={ (params: AutocompleteRenderInputParams) => {
-
-                                return (
-                                    <TextField
-                                        { ...params }
-                                        label={ t("extensions:develop.emailTemplates.form.inputs.locale.label") }
-                                        required
-                                        placeholder={
-                                            t("extensions:develop.emailTemplates.form.inputs.locale.placeholder")
-                                        }
-                                        size="small"
-                                        variant="outlined"
-                                    />
-                                );
-                            } }
-                            renderOption={ (props: React.ComponentProps<"li">, localeOption: LocaleOption) => {
-                                return (
-                                    <li { ...props }>
-                                        <Header.Content>
-                                            { localeOption.text }
-                                        </Header.Content>
-                                    </li>
-                                );
-                            } }
-                            key="locale"
-                            value={ localeList.find(
-                                (locale: LocaleOption) => locale.value === selectedLocale
-                            ) ?? null }
+                        <GroupedLocaleAutocomplete
+                            ariaLabel="Email Template Locale Dropdown"
+                            selectedLocale={ selectedLocale }
+                            onLocaleChanged={ onLocaleChanged }
+                            data-componentid={ `${ componentId }-api` }
                         />
                     </Grid.Column>
                 </Grid>

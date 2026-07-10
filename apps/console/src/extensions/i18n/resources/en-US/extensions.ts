@@ -2684,21 +2684,6 @@ export const extensions: Extensions = {
                         placeholder: "Select the email template",
                         hint: "Select the email template"
                     },
-                    locale: {
-                        groups: {
-                            default: {
-                                heading: "Built-in Languages",
-                                hint: "These languages are supported across all user-facing authentication, account recovery screens and My Account portal.",
-                                subHeading: "Languages available by default"
-                            },
-                            other: {
-                                heading: "Additional Languages",
-                                subHeading: "Other languages available for this template"
-                            }
-                        },
-                        label: "Locale",
-                        placeholder: "Select Locale"
-                    },
                     subject: {
                         label: "Subject",
                         placeholder: "Enter the email subject",
