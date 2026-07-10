@@ -254,6 +254,7 @@ export const commonConfigReducerInitialState: CommonConfigReducerStateInterface<
             },
             enableCustomEmailTemplates: undefined,
             enableCustomSmsTemplates: undefined,
+            enableLegacyLocaleDropdown: undefined,
             enableLegacySessionBoundTokenBehaviour: false,
             enableOldUIForEmailProvider: undefined,
             enabledFeatureOverridesInConsoleRolePermissions: [],

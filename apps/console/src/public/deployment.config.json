@@ -353,6 +353,7 @@
         "enableCustomSmsTemplates": true,
         "enableEmailDomain": false,
         "enableIdentityClaims": true,
+        "enableLegacyLocaleDropdown": false,
         "enableLegacySessionBoundTokenBehaviour": false,
         "enableOldUIForEmailProvider": false,
         "features": {

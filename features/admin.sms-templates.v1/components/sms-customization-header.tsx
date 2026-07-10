@@ -17,10 +17,13 @@
  */
 
 import GroupedLocaleAutocomplete, { LocaleOption } from "@wso2is/admin.core.v1/components/grouped-locale-autocomplete";
+import { AppState } from "@wso2is/admin.core.v1/store";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
-import { Field, Form } from "@wso2is/forms";
+import { DropdownChild, Field, Form } from "@wso2is/forms";
+import { SupportedLanguagesMeta } from "@wso2is/i18n";
 import React, { FunctionComponent, ReactElement, useMemo } from "react";
 import { useTranslation } from "react-i18next";
+import { useSelector } from "react-redux";
 import { Grid, Segment } from "semantic-ui-react";
 import { SMSTemplateType } from "../models/sms-templates";
 import "./sms-customization-header.scss";
@@ -82,6 +85,14 @@ const SMSCustomizationHeader: FunctionComponent<SMSCustomizationHeaderProps> = (
 
     const { t } = useTranslation();
 
+    const enableLegacyLocaleDropdown: boolean = useSelector(
+        (state: AppState): boolean => state?.config?.ui?.enableLegacyLocaleDropdown
+    );
+
+    const supportedI18nLanguagesFromStore: SupportedLanguagesMeta = useSelector(
+        (state: AppState): SupportedLanguagesMeta => state.global.supportedI18nLanguages
+    );
+
     const smsTemplateListOptions: { text: string, value: string }[] = useMemo(() => {
         return smsTemplatesList?.map((template: SMSTemplateType) => {
             return {
@@ -90,6 +101,25 @@ const SMSCustomizationHeader: FunctionComponent<SMSCustomizationHeaderProps> = (
             };
         });
     }, [ smsTemplatesList ]);
+
+    const legacyLocaleOptions: DropdownChild[] = useMemo(() => {
+        if (!supportedI18nLanguagesFromStore) {
+            return [];
+        }
+
+        return Object.values(supportedI18nLanguagesFromStore).map(
+            (locale: { code: string; name: string; flag: string }): DropdownChild => ({
+                key: locale.code,
+                text: (
+                    <div>
+                        <i className={ locale.flag + " flag" }></i>
+                        { locale.name }, { locale.code }
+                    </div>
+                ),
+                value: locale.code
+            })
+        );
+    }, [ supportedI18nLanguagesFromStore ]);
 
     return (
         <Segment
@@ -125,12 +155,29 @@ const SMSCustomizationHeader: FunctionComponent<SMSCustomizationHeaderProps> = (
                         mobile={ 16 }
                         computer={ 8 }
                     >
-                        <GroupedLocaleAutocomplete
-                            ariaLabel="SMS Template Locale Dropdown"
-                            selectedLocale={ selectedLocale }
-                            onLocaleChanged={ onLocaleChanged }
-                            data-componentid={ `${ componentId }-api` }
-                        />
+                        { enableLegacyLocaleDropdown ? (
+                            <Field.Dropdown
+                                ariaLabel="SMS Template Locale Dropdown"
+                                name="selectedSMSTemplateLocale"
+                                label={ t("common:localeDropdown.label") }
+                                options={ legacyLocaleOptions }
+                                required={ true }
+                                data-componentid={ `${ componentId }-sms-template-locale` }
+                                placeholder={ t("common:localeDropdown.placeholder") }
+                                defaultValue={ selectedLocale }
+                                value={ selectedLocale }
+                                listen={ (localeValue: string) =>
+                                    onLocaleChanged({ value: localeValue } as unknown as LocaleOption)
+                                }
+                            />
+                        ) : (
+                            <GroupedLocaleAutocomplete
+                                ariaLabel="SMS Template Locale Dropdown"
+                                selectedLocale={ selectedLocale }
+                                onLocaleChanged={ onLocaleChanged }
+                                data-componentid={ `${ componentId }-api` }
+                            />
+                        ) }
                     </Grid.Column>
                 </Grid>
             </Form>
