@@ -1169,6 +1169,11 @@
     "flag": "fr",
     "name": "Français (Morocco)"
   },
+  "ma-MA": {
+    "code": "ma-MA",
+    "flag": "ma",
+    "name": "Moroccan (Morocco)"
+  },
   "fr-NC": {
     "code": "fr-NC",
     "flag": "fr",
@@ -2043,6 +2048,11 @@
     "code": "sr-RS",
     "flag": "sr",
     "name": "Српски (Serbia)"
+  },
+  "sh-RS": {
+    "code": "sh-RS",
+    "flag": "sr",
+    "name": "Serbo-Croatian (Serbia)"
   },
   "sr-sr-latin": {
     "code": "sr-sr",

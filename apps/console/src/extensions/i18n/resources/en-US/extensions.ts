@@ -2684,10 +2684,6 @@ export const extensions: Extensions = {
                         placeholder: "Select the email template",
                         hint: "Select the email template"
                     },
-                    locale: {
-                        label: "Locale",
-                        placeholder: "Select Locale"
-                    },
                     subject: {
                         label: "Subject",
                         placeholder: "Enter the email subject",
