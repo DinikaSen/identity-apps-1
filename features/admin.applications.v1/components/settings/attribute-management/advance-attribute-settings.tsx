@@ -292,6 +292,22 @@ export const AdvanceAttributeSettings: FunctionComponent<AdvanceAttributeSetting
             settingValues.subject.claim = claimConfigurations.subject.claim.uri;
         }
 
+        // Preserve the configured role claim URI when the resolved value is empty, as the User Attributes tab does
+        // not expose a control to manage it and sending an empty value overwrites the persisted configuration.
+        if ((!settingValues?.role?.claim || settingValues?.role?.claim === "")
+            && claimConfigurations?.role?.claim?.uri
+            && claimConfigurations?.role?.claim?.uri !== "http://wso2.org/claims/role") {
+            settingValues.role.claim = claimConfigurations.role.claim.uri;
+        }
+
+        // Preserve the configured role userstore-domain flag when its checkbox is not rendered,
+        // as the tab exposes no control to manage it and sending false overwrites the persisted value.
+        if ((!config.showIncludeUserstoreDomainRole || !UIConfig?.legacyMode?.roleMapping)
+            && settingValues?.role?.includeUserDomain === false
+            && claimConfigurations?.role?.includeUserDomain !== undefined) {
+            settingValues.role.includeUserDomain = claimConfigurations.role.includeUserDomain;
+        }
+
         setSubmissionValues(settingValues);
     };
 
