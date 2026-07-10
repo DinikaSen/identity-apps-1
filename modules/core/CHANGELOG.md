@@ -1,5 +1,11 @@
 # @wso2is/core
 
+## 2.13.5
+
+### Patch Changes
+
+- [#10518](https://github.com/wso2/identity-apps/pull/10518) [`b3e74d2fba5a84a76ceed900cf6d8e05c7090779`](https://github.com/wso2/identity-apps/commit/b3e74d2fba5a84a76ceed900cf6d8e05c7090779) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Show all languages in the locale dropdown, grouped into default-supported and other languages, in the email and SMS template edit views.
+
 ## 2.13.4
 
 ### Patch Changes

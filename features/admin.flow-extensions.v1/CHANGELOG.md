@@ -1,5 +1,15 @@
 # @wso2is/admin.flow-extensions.v1
 
+## 0.1.1
+
+### Patch Changes
+
+- [#10505](https://github.com/wso2/identity-apps/pull/10505) [`d44afc4e86b576c89b2ab59ffe2a5690f198777c`](https://github.com/wso2/identity-apps/commit/d44afc4e86b576c89b2ab59ffe2a5690f198777c) Thanks [@KD23243](https://github.com/KD23243)! - Add encryption support for flow extensions
+
+- Updated dependencies [[`b3e74d2fba5a84a76ceed900cf6d8e05c7090779`](https://github.com/wso2/identity-apps/commit/b3e74d2fba5a84a76ceed900cf6d8e05c7090779), [`d44afc4e86b576c89b2ab59ffe2a5690f198777c`](https://github.com/wso2/identity-apps/commit/d44afc4e86b576c89b2ab59ffe2a5690f198777c)]:
+  - @wso2is/admin.core.v1@2.57.28
+  - @wso2is/core@2.13.5
+
 ## 0.1.0
 
 ### Minor Changes
