@@ -216,7 +216,6 @@ const GroupedLocaleAutocomplete: FunctionComponent<GroupedLocaleAutocompleteProp
             } }
             noOptionsText={ t("common:noResultsFound") }
             renderInput={ (params: AutocompleteRenderInputParams) => {
-
                 return (
                     <TextField
                         { ...params }
