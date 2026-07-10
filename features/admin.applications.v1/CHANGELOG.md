@@ -1,5 +1,17 @@
 # @wso2is/admin.applications.v1
 
+## 2.43.9
+
+### Patch Changes
+
+- [#10515](https://github.com/wso2/identity-apps/pull/10515) [`e5375c123ed807c87bc5b606c4d7fbb904d3bb91`](https://github.com/wso2/identity-apps/commit/e5375c123ed807c87bc5b606c4d7fbb904d3bb91) Thanks [@PasinduYeshan](https://github.com/PasinduYeshan)! - Preserve the configured role claim URI during application update instead of overwriting it with an empty value.
+
+- Updated dependencies [[`b3e74d2fba5a84a76ceed900cf6d8e05c7090779`](https://github.com/wso2/identity-apps/commit/b3e74d2fba5a84a76ceed900cf6d8e05c7090779), [`d44afc4e86b576c89b2ab59ffe2a5690f198777c`](https://github.com/wso2/identity-apps/commit/d44afc4e86b576c89b2ab59ffe2a5690f198777c)]:
+  - @wso2is/admin.core.v1@2.57.28
+  - @wso2is/core@2.13.5
+  - @wso2is/i18n@2.43.11
+  - @wso2is/admin.connections.v1@2.38.4
+
 ## 2.43.8
 
 ### Patch Changes
