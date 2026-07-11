@@ -1,5 +1,17 @@
 # @wso2is/console
 
+## 4.13.18
+
+### Patch Changes
+
+- [#10440](https://github.com/wso2/identity-apps/pull/10440) [`345c029afc01616dfc1e6b799c832b2d95218bc8`](https://github.com/wso2/identity-apps/commit/345c029afc01616dfc1e6b799c832b2d95218bc8) Thanks [@dannguyen24](https://github.com/dannguyen24)! - Replace inline array default props with module-level constants to prevent unnecessary re-renders
+
+- Updated dependencies [[`345c029afc01616dfc1e6b799c832b2d95218bc8`](https://github.com/wso2/identity-apps/commit/345c029afc01616dfc1e6b799c832b2d95218bc8)]:
+  - @wso2is/admin.approval-workflows.v1@1.3.32
+  - @wso2is/admin.policy-administration.v1@1.0.125
+  - @wso2is/admin.webhooks.v1@1.1.5
+  - @wso2is/core@2.13.6
+
 ## 4.13.17
 
 ### Patch Changes
