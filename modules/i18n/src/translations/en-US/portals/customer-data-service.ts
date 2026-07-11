@@ -259,8 +259,12 @@ export const customerDataService: CustomerDataServiceNS = {
             },
             fields: {
                 applicationIdentifier: {
-                    hint: "The application this attribute belongs to.",
-                    label: "Application"
+                    hint: "The application identifier this attribute belongs to, as stored in the customer data service.",
+                    label: "Application Identifier"
+                },
+                applicationName: {
+                    hint: "The name of the application this attribute belongs to.",
+                    label: "Application Name"
                 },
                 attribute: {
                     hint: "The name of this attribute.",

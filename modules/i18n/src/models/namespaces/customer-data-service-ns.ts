@@ -210,6 +210,10 @@ export interface CustomerDataServiceNS {
                     hint: string;
                     label: string;
                 };
+                applicationName: {
+                    hint: string;
+                    label: string;
+                };
                 attribute: {
                     hint: string;
                     label: string;
