@@ -1,5 +1,11 @@
 # @wso2is/identity-apps-core
 
+## 5.3.6
+
+### Patch Changes
+
+- [#10522](https://github.com/wso2/identity-apps/pull/10522) [`00357f88d4cb04d5eae05d35592ebccb6a909b46`](https://github.com/wso2/identity-apps/commit/00357f88d4cb04d5eae05d35592ebccb6a909b46) Thanks [@hwupathum](https://github.com/hwupathum)! - Add dutch translations
+
 ## 5.3.5
 
 ### Patch Changes
