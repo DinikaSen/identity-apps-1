@@ -1,5 +1,11 @@
 # @wso2is/admin.webhooks.v1
 
+## 1.1.6
+
+### Patch Changes
+
+- [#10527](https://github.com/wso2/identity-apps/pull/10527) [`8ee07b1d5f4613a21a6e91e082df7e09393e0747`](https://github.com/wso2/identity-apps/commit/8ee07b1d5f4613a21a6e91e082df7e09393e0747) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Fix webhook secret field password autocomplete
+
 ## 1.1.5
 
 ### Patch Changes
