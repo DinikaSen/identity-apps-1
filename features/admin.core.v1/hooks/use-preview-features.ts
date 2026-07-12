@@ -209,11 +209,7 @@ export const usePreviewFeatures = (): UsePreviewFeaturesReturnInterface => {
                     ? currentApps.includes(consoleAppIdentifier)
                         ? currentApps
                         : [ ...currentApps, consoleAppIdentifier ]
-                    // Remove both the resolved identifier and the legacy client ID to clear
-                    // any entry stored before an identifier type switch.
-                    : currentApps.filter(
-                        (app: string) => app !== consoleAppIdentifier && app !== CDS_CONSOLE_APP
-                    );
+                    : currentApps.filter((app: string) => app !== consoleAppIdentifier);
 
                 await updateCDSConfig({
                     cds_enabled: enable,

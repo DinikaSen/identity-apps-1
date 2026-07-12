@@ -45,7 +45,7 @@ export interface CDSApplicationInterface {
     identifier: string;
 }
 
-export interface UseCDSApplicationsReturn {
+interface UseCDSApplicationsReturn {
     /**
      * Applications with a resolvable CDS identifier.
      */
@@ -70,32 +70,33 @@ const APPLICATION_LIST_PAGE_SIZE: number = 100;
  *
  * @returns All applications with client ID and issuer attributes.
  */
-const fetchAllApplications = async (): Promise<ApplicationListItemInterface[]> => {
-    const allApplications: ApplicationListItemInterface[] = [];
-    let offset: number = 0;
-    let totalResults: number = 0;
+const fetchAllApplications: () => Promise<ApplicationListItemInterface[]> =
+    async (): Promise<ApplicationListItemInterface[]> => {
+        const allApplications: ApplicationListItemInterface[] = [];
+        let offset: number = 0;
+        let totalResults: number = 0;
 
-    do {
-        const page: ApplicationListInterface = await getApplicationList(
-            APPLICATION_LIST_PAGE_SIZE,
-            offset,
-            null,
-            true,
-            "clientId,issuer"
-        );
-        const pageApplications: ApplicationListItemInterface[] = page?.applications ?? [];
+        do {
+            const page: ApplicationListInterface = await getApplicationList(
+                APPLICATION_LIST_PAGE_SIZE,
+                offset,
+                null,
+                true,
+                "clientId,issuer"
+            );
+            const pageApplications: ApplicationListItemInterface[] = page?.applications ?? [];
 
-        if (pageApplications.length === 0) {
-            break;
-        }
+            if (pageApplications.length === 0) {
+                break;
+            }
 
-        allApplications.push(...pageApplications);
-        totalResults = page?.totalResults ?? 0;
-        offset += pageApplications.length;
-    } while (offset < totalResults);
+            allApplications.push(...pageApplications);
+            totalResults = page?.totalResults ?? 0;
+            offset += pageApplications.length;
+        } while (offset < totalResults);
 
-    return allApplications;
-};
+        return allApplications;
+    };
 
 /**
  * Hook to fetch applications for CDS application data operations.
@@ -133,7 +134,10 @@ export const useCDSApplications = (shouldFetch: boolean = true): UseCDSApplicati
                 }
             })
             // Fail silently - the UI falls back to displaying raw identifiers.
-            .catch((): void => undefined)
+            // Clear the latch so a later shouldFetch change can retry the fetch.
+            .catch((): void => {
+                hasFetchedRef.current = false;
+            })
             .finally((): void => {
                 if (!isCancelled) {
                     setIsLoading(false);
