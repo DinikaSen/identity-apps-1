@@ -56,7 +56,6 @@ export const customerDataService: CustomerDataServiceNS = {
     landing: {
         backButton: "Go back to Customer Data",
         configuration: {
-            heading: "Configuration",
             profileAttributes: {
                 description: "Manage the attributes that make up the customer profiles",
                 title: "Profile Attributes"
@@ -67,7 +66,6 @@ export const customerDataService: CustomerDataServiceNS = {
             }
         },
         enable: {
-            hint: "When enabled, the Customer Data Service collects and unifies profile data across your applications. Configure how attributes are mapped and how duplicate identities are merged below.",
             label: "Enable Customer Data Service"
         },
         notifications: {
@@ -83,7 +81,7 @@ export const customerDataService: CustomerDataServiceNS = {
             }
         },
         page: {
-            description: "Collect and unify customer data from every interaction across your applications",
+            description: "Collect and unify customer data across your applications",
             title: "Customer Data"
         },
         profiles: {

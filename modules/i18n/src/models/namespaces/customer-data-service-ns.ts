@@ -54,11 +54,9 @@ export interface CustomerDataServiceNS {
             title: string;
         };
         enable: {
-            hint: string;
             label: string;
         };
         configuration: {
-            heading: string;
             profileAttributes: {
                 description: string;
                 title: string;
