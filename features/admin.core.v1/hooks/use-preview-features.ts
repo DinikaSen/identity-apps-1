@@ -257,15 +257,12 @@ export const usePreviewFeatures = (): UsePreviewFeaturesReturnInterface => {
 
     const hasAccessiblePreviewFeatures: boolean = accessibleFeatures.length > 0;
     const canUsePreviewFeatures: boolean =
-        !isCDSUnifiedProfileViewEnabled() &&
         (
-            (
-                saasFeatureStatus === FeatureStatus.ENABLED &&
-                previewFeaturesFeatureStatus === FeatureStatus.ENABLED
-            ) ||
-            cdsFeatureConfig?.enabled === true &&
-            hasAccessiblePreviewFeatures
-        );
+            saasFeatureStatus === FeatureStatus.ENABLED &&
+            previewFeaturesFeatureStatus === FeatureStatus.ENABLED
+        ) ||
+        cdsFeatureConfig?.enabled === true &&
+        hasAccessiblePreviewFeatures;
 
     return {
         accessibleFeatures,
