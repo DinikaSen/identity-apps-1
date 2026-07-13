@@ -1,5 +1,20 @@
 # @wso2is/console
 
+## 4.13.20
+
+### Patch Changes
+
+- [#10514](https://github.com/wso2/identity-apps/pull/10514) [`436349cca347d8b68b4fd78dca3832e93167d71b`](https://github.com/wso2/identity-apps/commit/436349cca347d8b68b4fd78dca3832e93167d71b) Thanks [@SujanSanjula96](https://github.com/SujanSanjula96)! - Support app ID as the CDS application identifier based on a config and always display application names in CDS UIs
+
+* [#10528](https://github.com/wso2/identity-apps/pull/10528) [`bb1c1b635fe1cb646c27b9d2c7391108ea896f12`](https://github.com/wso2/identity-apps/commit/bb1c1b635fe1cb646c27b9d2c7391108ea896f12) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Update email template update premium info message
+
+* Updated dependencies [[`436349cca347d8b68b4fd78dca3832e93167d71b`](https://github.com/wso2/identity-apps/commit/436349cca347d8b68b4fd78dca3832e93167d71b), [`bb1c1b635fe1cb646c27b9d2c7391108ea896f12`](https://github.com/wso2/identity-apps/commit/bb1c1b635fe1cb646c27b9d2c7391108ea896f12)]:
+  - @wso2is/admin.applications.v1@2.43.10
+  - @wso2is/admin.cds.v1@1.6.7
+  - @wso2is/admin.core.v1@2.57.29
+  - @wso2is/i18n@2.43.12
+  - @wso2is/admin.users.v1@2.38.42
+
 ## 4.13.19
 
 ### Patch Changes

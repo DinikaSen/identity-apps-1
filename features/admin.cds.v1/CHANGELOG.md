@@ -1,5 +1,15 @@
 # @wso2is/admin.cds.v1
 
+## 1.6.7
+
+### Patch Changes
+
+- [#10514](https://github.com/wso2/identity-apps/pull/10514) [`436349cca347d8b68b4fd78dca3832e93167d71b`](https://github.com/wso2/identity-apps/commit/436349cca347d8b68b4fd78dca3832e93167d71b) Thanks [@SujanSanjula96](https://github.com/SujanSanjula96)! - Support app ID as the CDS application identifier based on a config and always display application names in CDS UIs
+
+- Updated dependencies [[`436349cca347d8b68b4fd78dca3832e93167d71b`](https://github.com/wso2/identity-apps/commit/436349cca347d8b68b4fd78dca3832e93167d71b)]:
+  - @wso2is/admin.applications.v1@2.43.10
+  - @wso2is/admin.core.v1@2.57.29
+
 ## 1.6.6
 
 ### Patch Changes
