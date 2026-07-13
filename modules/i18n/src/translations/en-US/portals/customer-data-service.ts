@@ -54,15 +54,15 @@ export const customerDataService: CustomerDataServiceNS = {
         }
     },
     landing: {
-        backButton: "Go back to Customer Data Profile",
+        backButton: "Go back to Customer Data",
         configuration: {
             heading: "Configuration",
             profileAttributes: {
-                description: "Define the attributes captured on each customer profile and how they map to source data.",
+                description: "Manage the attributes that make up the customer profiles",
                 title: "Profile Attributes"
             },
             unificationRules: {
-                description: "Set the rules used to match and merge duplicate identities into a single profile.",
+                description: "Manage profile unification rules",
                 title: "Unification Rules"
             }
         },
@@ -83,8 +83,8 @@ export const customerDataService: CustomerDataServiceNS = {
             }
         },
         page: {
-            description: "Unify and manage customer profiles built from identity, behavioural and application data — all in one place.",
-            title: "Customer Data Profile"
+            description: "Collect and unify customer data from every interaction across your applications",
+            title: "Customer Data"
         },
         profiles: {
             description: "Manage customer profiles which have identity, behavioural and application data.",
@@ -637,7 +637,7 @@ export const customerDataService: CustomerDataServiceNS = {
         ProfileAttributes: "Profile Attributes",
         Profiles: "Profiles",
         UnificationRules: "Unification Rules",
-        customerDataProfile: "Customer Data Profile"
+        customerDataProfile: "Customer Data"
     },
     unificationRules: {
         common: {

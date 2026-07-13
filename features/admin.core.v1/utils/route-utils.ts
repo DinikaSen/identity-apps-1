@@ -544,8 +544,9 @@ export class RouteUtils {
             },
             ...(isCDSUnifiedProfileViewEnabled() ? [
                 {
-                    category: customerDataCategory,
+                    category: manage,
                     id: "customerDataService",
+                    order: 1,
                     selected: [
                         AppConstants.getPaths().get("CUSTOMER_DATA_PROFILE"),
                         AppConstants.getPaths().get("PROFILES"),

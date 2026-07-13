@@ -16,7 +16,6 @@
  * under the License.
  */
 
-import Alert from "@oxygen-ui/react/Alert";
 import { useRequiredScopes } from "@wso2is/access-control";
 import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
 import { history } from "@wso2is/admin.core.v1/helpers/history";
@@ -29,7 +28,7 @@ import React, { FunctionComponent, ReactElement, SyntheticEvent } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
-import { Checkbox, CheckboxProps, Divider } from "semantic-ui-react";
+import { Checkbox, CheckboxProps, Divider, Header } from "semantic-ui-react";
 import { ReactComponent as ProfileAttributesIcon } from "../assets/images/icons/cds-profile-attributes.svg";
 import { ReactComponent as UnificationRuleIcon } from "../assets/images/icons/unification-rules.svg";
 import ConfigurationCard from "../components/configuration-card";
@@ -95,10 +94,6 @@ const CustomerDataProfilePage: FunctionComponent<IdentifiableComponentInterface>
                 data-componentid={ `${ componentId }-enable-toggle` }
             />
             <Divider hidden />
-            <Alert severity="info">
-                { t("customerDataService:landing.enable.hint") }
-            </Alert>
-            <Divider hidden />
             <ConfigurationCard
                 title={ t("customerDataService:landing.configuration.profileAttributes.title") }
                 description={ t("customerDataService:landing.configuration.profileAttributes.description") }
@@ -120,6 +115,13 @@ const CustomerDataProfilePage: FunctionComponent<IdentifiableComponentInterface>
                 className={ classNames({ "cds-section-disabled": !isCDSEnabled }) }
                 data-componentid={ `${ componentId }-profiles-section` }
             >
+                <Header as="h4" data-componentid={ `${ componentId }-profiles-heading` }>
+                    { t("customerDataService:landing.profiles.heading") }
+                    <Header.Subheader>
+                        { t("customerDataService:landing.profiles.description") }
+                    </Header.Subheader>
+                </Header>
+                <Divider hidden />
                 <ProfilesSection shouldFetch={ isCDSEnabled } />
             </div>
         </PageLayout>
