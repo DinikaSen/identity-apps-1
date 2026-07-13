@@ -175,7 +175,7 @@ const SMSCustomizationHeader: FunctionComponent<SMSCustomizationHeaderProps> = (
                                 ariaLabel="SMS Template Locale Dropdown"
                                 selectedLocale={ selectedLocale }
                                 onLocaleChanged={ onLocaleChanged }
-                                data-componentid={ `${ componentId }-api` }
+                                data-componentid={ `${ componentId }-sms-template-locale` }
                             />
                         ) }
                     </Grid.Column>
