@@ -26,7 +26,7 @@ import { Grid, Icon, List } from "semantic-ui-react";
 /**
  * Props interface of {@link ConfigurationCard}.
  */
-export interface ConfigurationCardPropsInterface extends IdentifiableComponentInterface {
+interface ConfigurationCardPropsInterface extends IdentifiableComponentInterface {
     /**
      * Card description.
      */

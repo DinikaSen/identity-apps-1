@@ -40,7 +40,7 @@ const ProfilesPage: FunctionComponent = (): ReactElement => {
                 }
                 : undefined
             }
-            data-testid="profiles-page-layout"
+            data-componentid="profiles-page-layout"
         >
             <ProfilesSection />
         </PageLayout>

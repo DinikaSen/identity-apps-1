@@ -47,7 +47,7 @@ const DEFAULT_LIST_FIELDS: string[] = [
 /**
  * Props interface of {@link ProfilesSection}.
  */
-export interface ProfilesSectionPropsInterface extends IdentifiableComponentInterface {
+interface ProfilesSectionPropsInterface extends IdentifiableComponentInterface {
     /**
      * Whether the profile list should be fetched. Pass `false` while CDS is disabled.
      */
@@ -223,7 +223,6 @@ const ProfilesSection: FunctionComponent<ProfilesSectionPropsInterface> = ({
             totalListSize={ (activePage - 1) * pageSize + (profileList?.length ?? 0) }
             showPagination={ true }
             isLoading={ isLoading }
-            data-testid="profiles-list-layout"
             data-componentid={ componentId }
             paginationOptions={ {
                 disableNextButton: !hasNext,
