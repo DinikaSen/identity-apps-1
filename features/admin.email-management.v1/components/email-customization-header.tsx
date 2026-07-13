@@ -175,7 +175,7 @@ const EmailCustomizationHeader: FunctionComponent<EmailCustomizationHeaderProps>
                                 ariaLabel="Email Template Locale Dropdown"
                                 selectedLocale={ selectedLocale }
                                 onLocaleChanged={ onLocaleChanged }
-                                data-componentid={ `${ componentId }-api` }
+                                data-componentid={ `${ componentId }-email-template-locale` }
                             />
                         ) }
                     </Grid.Column>
