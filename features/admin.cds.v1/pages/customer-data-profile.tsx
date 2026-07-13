@@ -23,7 +23,6 @@ import { AppState } from "@wso2is/admin.core.v1/store";
 import { AlertLevels, FeatureAccessConfigInterface, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { PageLayout } from "@wso2is/react-components";
-import classNames from "classnames";
 import React, { FunctionComponent, ReactElement, SyntheticEvent } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
@@ -110,20 +109,21 @@ const CustomerDataProfilePage: FunctionComponent<IdentifiableComponentInterface>
                 onClick={ () => history.push(AppConstants.getPaths().get("UNIFICATION_RULES")) }
                 data-componentid={ `${ componentId }-unification-rules-card` }
             />
-            <Divider hidden />
-            <div
-                className={ classNames({ "cds-section-disabled": !isCDSEnabled }) }
-                data-componentid={ `${ componentId }-profiles-section` }
-            >
-                <Header as="h4" data-componentid={ `${ componentId }-profiles-heading` }>
-                    { t("customerDataService:landing.profiles.heading") }
-                    <Header.Subheader>
-                        { t("customerDataService:landing.profiles.description") }
-                    </Header.Subheader>
-                </Header>
-                <Divider hidden />
-                <ProfilesSection shouldFetch={ isCDSEnabled } />
-            </div>
+            { isCDSEnabled && (
+                <>
+                    <Divider hidden />
+                    <div data-componentid={ `${ componentId }-profiles-section` }>
+                        <Header as="h4" data-componentid={ `${ componentId }-profiles-heading` }>
+                            { t("customerDataService:landing.profiles.heading") }
+                            <Header.Subheader>
+                                { t("customerDataService:landing.profiles.description") }
+                            </Header.Subheader>
+                        </Header>
+                        <Divider hidden />
+                        <ProfilesSection shouldFetch={ isCDSEnabled } />
+                    </div>
+                </>
+            ) }
         </PageLayout>
     );
 };
