@@ -41,6 +41,7 @@
                 "termsOfServiceUrl": ""
             }
         },
+        "cdsApplicationIdentifierType": "client_id",
         "cdsHost": "",
         "defaultBrandedLoginScreenCopyright": "${copyright} ${year} WSO2 LLC.",
         "emailTemplates": [

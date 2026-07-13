@@ -96,11 +96,12 @@ export const customerDataService: CustomerDataServiceNS = {
                     fields: {
                         // NEW: application identifier field (application_data scope)
                         applicationIdentifier: {
-                            label: "Application Identifier",
+                            label: "Application",
                             loading: "Loading applications…",
                             noOptions: "No applications found.",
+                            placeholder: "Select an application",
                             validations: {
-                                empty: "Application identifier is required."
+                                empty: "An application is required."
                             }
                         },
                         // NEW: compound attribute row
@@ -258,8 +259,12 @@ export const customerDataService: CustomerDataServiceNS = {
             },
             fields: {
                 applicationIdentifier: {
-                    hint: "The application this attribute belongs to.",
+                    hint: "The application identifier this attribute belongs to, as stored in the customer data service.",
                     label: "Application Identifier"
+                },
+                applicationName: {
+                    hint: "The name of the application this attribute belongs to.",
+                    label: "Application Name"
                 },
                 attribute: {
                     hint: "The name of this attribute.",

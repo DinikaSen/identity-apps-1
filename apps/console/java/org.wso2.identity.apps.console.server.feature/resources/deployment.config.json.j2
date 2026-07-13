@@ -103,6 +103,8 @@
         {% for key, value in console.extensions.items() %}
         {% if key == 'cds_host' %}
             "cdsHost": "{{ value }}"{{ "," if not loop.last }}
+        {% elif key == 'cds_application_identifier_type' %}
+            "cdsApplicationIdentifierType": "{{ value }}"{{ "," if not loop.last }}
         {% elif value is number or value is boolean %}
             "{{ key }}": {{ value }}{{ "," if not loop.last }}
         {% elif value is mapping %}

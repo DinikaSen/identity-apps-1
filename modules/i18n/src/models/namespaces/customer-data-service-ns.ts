@@ -100,6 +100,7 @@ export interface CustomerDataServiceNS {
                             label: string;
                             loading: string;
                             noOptions: string;
+                            placeholder: string;
                             validations: {
                                 empty: string;
                             };
@@ -206,6 +207,10 @@ export interface CustomerDataServiceNS {
             };
             fields: {
                 applicationIdentifier: {
+                    hint: string;
+                    label: string;
+                };
+                applicationName: {
                     hint: string;
                     label: string;
                 };
