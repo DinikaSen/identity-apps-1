@@ -1,5 +1,11 @@
 # @wso2is/identity-apps-core
 
+## 5.3.7
+
+### Patch Changes
+
+- [#10454](https://github.com/wso2/identity-apps/pull/10454) [`c8c20a49d099d63791bfee33584e3621cb703376`](https://github.com/wso2/identity-apps/commit/c8c20a49d099d63791bfee33584e3621cb703376) Thanks [@SujanSanjula96](https://github.com/SujanSanjula96)! - Support the `anonymous_profile_tracker` query param as a fallback to track the CDS profile in the registration orchestration flow
+
 ## 5.3.6
 
 ### Patch Changes
