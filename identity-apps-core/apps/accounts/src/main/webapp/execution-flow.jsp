@@ -101,6 +101,11 @@
             }
         }
     }
+
+    // Fall back to the anonymous_profile_tracker query param when the cds_profile cookie is not available.
+    if (StringUtils.isBlank(anonymousProfileTracker)) {
+        anonymousProfileTracker = request.getParameter("anonymous_profile_tracker");
+    }
 %>
 
 <!DOCTYPE html>
