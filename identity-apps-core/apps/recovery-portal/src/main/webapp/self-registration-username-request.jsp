@@ -452,12 +452,6 @@
         }
     }
 
-    // Fall back to the anonymous_profile_tracker query param when the cds_profile cookie is not
-    // available
-    if (StringUtils.isBlank(cdsProfileCookie)) {
-        cdsProfileCookie = request.getParameter("anonymous_profile_tracker");
-    }
-
     if (cdsProfileCookie != null) {
         // Set as a request attribute to be used in your form
         request.setAttribute("cds_profile", cdsProfileCookie);
@@ -918,7 +912,7 @@
                                    value="<%=value%>" class="form-control">
                         </div>
                         <% } %>
-                        <input type="hidden" name="http://wso2.org/claims/cdsProfile" value="<%= cdsProfileCookie != null ? Encode.forHtmlAttribute(cdsProfileCookie) : "" %>">
+                        <input type="hidden" name="http://wso2.org/claims/cdsProfile" value="<%= cdsProfileCookie != null ? cdsProfileCookie : "" %>">
 
                         <div id="password-validation-block">
                             <div id="length-block" class="password-policy-description mb-2" style="display: none;">
