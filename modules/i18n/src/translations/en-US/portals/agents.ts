@@ -208,6 +208,11 @@ export const agents: AgentsNS = {
             error: {
                 description: "Creating agent failed",
                 message: "Something went wrong"
+            },
+            limitReached: {
+                description: "You have reached the maximum number of applications allowed "
+                    + "for this organization, so an application cannot be created for this agent.",
+                message: "Application limit reached"
             }
         },
         buttons: {
