@@ -17,7 +17,7 @@
  */
 
 const FEATURE_SCOPE_PREFIX: string = "console:";
-const PER_ACTION_FEATURE_SCOPE_SUFFIXES: ReadonlyArray<string> = [ "_create", "_update", "_delete", "_edit" ];
+const PER_ACTION_FEATURE_SCOPE_SUFFIXES: ReadonlyArray<string> = [ "_create", "_update", "_delete", "_edit", "_view" ];
 
 /**
  * Whether a scope is a per-action Console feature scope (see {@link PER_ACTION_FEATURE_SCOPE_SUFFIXES}).
@@ -31,9 +31,6 @@ const isPerActionFeatureScope = (scopeName: string): boolean =>
  * checked — every scope except the per-action feature scopes. A level is then considered granted
  * when all of these "eligibility" scopes are present, so two levels that resolve to the same
  * management scopes (differing only by their per-action feature scope) select and clear together.
- *
- * Only meaningful in the granular console-permission model; the legacy read/write path must keep
- * evaluating the raw scope names.
  *
  * @param scopeNames - The full set of backing scope names for a permission level.
  * @returns The scope names to use for the granted/eligible check.
