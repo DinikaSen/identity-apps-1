@@ -32,7 +32,6 @@ import Chip from "@oxygen-ui/react/Chip";
 import Paper from "@oxygen-ui/react/Paper";
 import Typography from "@oxygen-ui/react/Typography";
 import { ChevronDownIcon } from "@oxygen-ui/react-icons";
-import { FeatureAccessConfigInterface } from "@wso2is/access-control";
 import { UIConstants } from "@wso2is/admin.core.v1/constants/ui-constants";
 import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
 import { AppState } from "@wso2is/admin.core.v1/store";
@@ -41,13 +40,8 @@ import { CreateRolePermissionInterface } from "@wso2is/admin.roles.v2/models/rol
 import { isFeatureEnabled } from "@wso2is/core/helpers";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import cloneDeep from "lodash-es/cloneDeep";
-import flatMap from "lodash-es/flatMap";
-import fromPairs from "lodash-es/fromPairs";
 import get from "lodash-es/get";
 import isEmpty from "lodash-es/isEmpty";
-import mapValues from "lodash-es/mapValues";
-import omit from "lodash-es/omit";
-import values from "lodash-es/values";
 import React, {
     ChangeEvent,
     FunctionComponent,
@@ -73,6 +67,7 @@ import {
     SelectedPermissionCategoryInterface,
     SelectedPermissionsInterface
 } from "../../../models/permissions-ui";
+import flattenFeatureConfig from "../../../utils/flatten-feature-config";
 import getEligibilityScopeNames from "../../../utils/get-eligibility-scope-names";
 import isPermissionLevelActionable from "../../../utils/is-permission-level-actionable";
 import transformResourceCollectionToPermissions from "../../../utils/transform-resource-collection-to-permissions";
@@ -278,24 +273,10 @@ const CreateConsoleRoleWizardPermissionsForm: FunctionComponent<CreateConsoleRol
     }, [ initialValues ]);
 
     // Flatten the feature config to easily access sub features.
-    const flattenedFeatureConfig: FeatureConfigInterface = useMemo(() => {
-        const topLevelFeatures: Record<string, Omit<FeatureAccessConfigInterface, "subFeatures">> = mapValues(
-            featureConfig,
-            (feature: FeatureAccessConfigInterface) => omit(feature, [ "subFeatures" ])
-        );
-
-        const subLevelFeatures: Record<string, Omit<FeatureAccessConfigInterface, "subFeatures">> = fromPairs(
-            flatMap(values(featureConfig), (feature: FeatureAccessConfigInterface) => {
-                return Object.entries(feature.subFeatures || {});
-            })
-        );
-
-        return {
-            ...topLevelFeatures,
-            ...subLevelFeatures
-        } as FeatureConfigInterface;
-
-    }, [ featureConfig ]);
+    const flattenedFeatureConfig: FeatureConfigInterface = useMemo(
+        () => flattenFeatureConfig(featureConfig),
+        [ featureConfig ]
+    );
 
     const filteredTenantAPIResourceCollections: APIResourceCollectionResponseInterface = useMemo(() => {
 

@@ -51,6 +51,7 @@ import {
     APIResourceCollectionResponseInterface
 } from "../../../models/console-roles";
 import { SelectedPermissionCategoryInterface, SelectedPermissionsInterface } from "../../../models/permissions-ui";
+import flattenFeatureConfig from "../../../utils/flatten-feature-config";
 import getEligibilityScopeNames from "../../../utils/get-eligibility-scope-names";
 import isPermissionLevelActionable from "../../../utils/is-permission-level-actionable";
 import transformResourceCollectionToPermissions from "../../../utils/transform-resource-collection-to-permissions";
@@ -105,6 +106,8 @@ const ConsoleRolePermissions: FunctionComponent<ConsoleRolePermissionsProps> = (
     const { t } = useTranslation();
 
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
+    const enabledFeatureOverridesInConsoleRolePermissions: string[] = useSelector(
+        (state: AppState) => state.config.ui.enabledFeatureOverridesInConsoleRolePermissions);
 
     /**
      * Switches the permissions evaluation between the legacy and the granular mode.
@@ -127,6 +130,14 @@ const ConsoleRolePermissions: FunctionComponent<ConsoleRolePermissionsProps> = (
 
     const [ permissions, setPermissions ] = useState<CreateRolePermissionInterface[]>(undefined);
 
+    // Flatten the feature config to easily access sub features. Must match the wizard so the initial
+    // values computed here cover every row the wizard renders — otherwise sub-feature rows (e.g.
+    // `applicationAuthenticationScript`) load with no checkbox state.
+    const flattenedFeatureConfig: FeatureConfigInterface = useMemo(
+        () => flattenFeatureConfig(featureConfig),
+        [ featureConfig ]
+    );
+
     const filteredTenantAPIResourceCollections: APIResourceCollectionResponseInterface = useMemo(() => {
 
         if (!tenantAPIResourceCollections) {
@@ -143,13 +154,14 @@ const ConsoleRolePermissions: FunctionComponent<ConsoleRolePermissionsProps> = (
             apiResourceCollections: tenantAPIResourceCollections.apiResourceCollections.filter(
                 (item: APIResourceCollectionInterface) =>
                     !filteringAPIResourceCollectionNames.includes(item?.name) &&
-                    (!useGranularConsolePermissions || (
-                        featureConfig?.[item?.name]?.enabled
-                        || featureConfig?.[UIConstants.CONSOLE_FEATURE_MAP[item?.name]]?.enabled
-                    ))
+                    (
+                        enabledFeatureOverridesInConsoleRolePermissions?.includes(item?.name)
+                        || flattenedFeatureConfig?.[item?.name]?.enabled
+                        || flattenedFeatureConfig?.[UIConstants.CONSOLE_FEATURE_MAP[item?.name]]?.enabled
+                    )
             )
         };
-    }, [ tenantAPIResourceCollections, featureConfig, useGranularConsolePermissions ]);
+    }, [ tenantAPIResourceCollections, flattenedFeatureConfig, enabledFeatureOverridesInConsoleRolePermissions ]);
 
     const filteredOrganizationAPIResourceCollections: APIResourceCollectionResponseInterface = useMemo(() => {
 
@@ -165,11 +177,24 @@ const ConsoleRolePermissions: FunctionComponent<ConsoleRolePermissionsProps> = (
         return {
             ...organizationAPIResourceCollections,
             apiResourceCollections: organizationAPIResourceCollections.apiResourceCollections.filter(
-                (item: APIResourceCollectionInterface) =>
-                    !filteringAPIResourceCollectionNames.includes(item?.name)
+                (item: APIResourceCollectionInterface) => {
+                    const itemName: string = item?.name ?? "";
+                    const featureNameWithoutOrgPrefix: string = itemName.startsWith(
+                        ConsoleRolesOnboardingConstants.ORG_PREFIX)
+                        ? itemName.substring(ConsoleRolesOnboardingConstants.ORG_PREFIX.length)
+                        : itemName;
+
+                    return !filteringAPIResourceCollectionNames.includes(itemName) &&
+                        (
+                            enabledFeatureOverridesInConsoleRolePermissions?.includes(featureNameWithoutOrgPrefix)
+                            || flattenedFeatureConfig?.[featureNameWithoutOrgPrefix]?.enabled
+                            || flattenedFeatureConfig?.[UIConstants.CONSOLE_FEATURE_MAP[
+                                featureNameWithoutOrgPrefix]]?.enabled
+                        );
+                }
             )
         };
-    }, [ organizationAPIResourceCollections ]);
+    }, [ organizationAPIResourceCollections, flattenedFeatureConfig, enabledFeatureOverridesInConsoleRolePermissions ]);
 
     /**
      * Extracts all scope names from a permission-category array.
