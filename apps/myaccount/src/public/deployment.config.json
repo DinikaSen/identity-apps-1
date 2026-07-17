@@ -128,6 +128,9 @@
                     "security.mfa.sms"
                 ],
                 "enabled": true,
+                "properties": {
+                    "multiplePushDeviceSupportEnabled": true
+                },
                 "scopes": {
                     "create": [],
                     "delete": [],
