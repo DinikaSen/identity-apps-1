@@ -1,5 +1,15 @@
 # @wso2is/identity-apps-core
 
+## 5.4.0
+
+### Minor Changes
+
+- [#10431](https://github.com/wso2/identity-apps/pull/10431) [`7900686092940a4f64f79a98642597a70172f1cb`](https://github.com/wso2/identity-apps/commit/7900686092940a4f64f79a98642597a70172f1cb) Thanks [@raviendalpatadu](https://github.com/raviendalpatadu)! - Add multi-device support for push authentication
+
+### Patch Changes
+
+- [#10458](https://github.com/wso2/identity-apps/pull/10458) [`5dd6c52261fe099eb7e21fe17a61684faadc900a`](https://github.com/wso2/identity-apps/commit/5dd6c52261fe099eb7e21fe17a61684faadc900a) Thanks [@mpmadhavig](https://github.com/mpmadhavig)! - Add granular console permission scopes for create, update, and delete operations.
+
 ## 5.3.8
 
 ### Patch Changes
