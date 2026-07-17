@@ -30,6 +30,7 @@ import {
     RolePermissionInterface,
     RolesInterface
 } from "@wso2is/core/models";
+import { isFeatureEnabled } from "@wso2is/core/helpers";
 import { addAlert } from "@wso2is/core/store";
 import {
     EmphasizedSegment,
@@ -103,16 +104,15 @@ const ConsoleRolePermissions: FunctionComponent<ConsoleRolePermissionsProps> = (
 
     const { t } = useTranslation();
 
-    const disabledFeatures: string[] = useSelector((state: AppState) =>
-        state?.config?.ui?.features?.consoleSettings?.disabledFeatures);
-
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
 
     /**
      * Switches the permissions evaluation between the legacy and the granular mode.
      */
-    const useGranularConsolePermissions: boolean = !disabledFeatures?.includes(
-        ConsoleRolesOnboardingConstants.GRANULAR_CONSOLE_PERMISSIONS_FEATURE_KEY);
+    const useGranularConsolePermissions: boolean = isFeatureEnabled(
+        featureConfig?.consoleSettings,
+        ConsoleRolesOnboardingConstants.GRANULAR_CONSOLE_PERMISSIONS_FEATURE_KEY
+    );
     const { data: tenantAPIResourceCollections } = useGetAPIResourceCollections(
         true,
         "type eq tenant",

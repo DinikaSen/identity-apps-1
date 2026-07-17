@@ -63,7 +63,10 @@ export interface ConsoleSettingsNS {
             view: string;
             edit: string;
             selectAll: string;
+            selectAllTenant: string;
+            selectAllOrganization: string;
             selectCollection: string;
+            selectRowPermission: string;
             read: string;
             create: string;
             update: string;
@@ -71,6 +74,11 @@ export interface ConsoleSettingsNS {
             viewRequiredWarning: string;
             viewLockedRow: string;
             viewSelectAllLocked: string;
+            toggleGroupAriaLabel: string;
+            toggleViewAriaLabel: string;
+            toggleEditAriaLabel: string;
+            tenantTableAriaLabel: string;
+            organizationTableAriaLabel: string;
         };
     };
     enterpriseLogin: {

@@ -141,6 +141,11 @@ export interface FeatureConfigInterface {
      */
     certificates?: FeatureAccessConfigInterface;
     /**
+     * Console settings feature. Currently the only consumer is the console-roles permissions UI,
+     * which reads the granular-console-permissions flag from its `disabledFeatures` list.
+     */
+    consoleSettings?: FeatureAccessConfigInterface;
+    /**
      * Copilot AI assistant feature.
      */
     copilot?: FeatureAccessConfigInterface;

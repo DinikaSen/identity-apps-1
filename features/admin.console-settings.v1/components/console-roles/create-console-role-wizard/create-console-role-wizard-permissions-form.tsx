@@ -38,6 +38,7 @@ import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
 import { AppState } from "@wso2is/admin.core.v1/store";
 import { useGetCurrentOrganizationType } from "@wso2is/admin.organizations.v1/hooks/use-get-organization-type";
 import { CreateRolePermissionInterface } from "@wso2is/admin.roles.v2/models/roles";
+import { isFeatureEnabled } from "@wso2is/core/helpers";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import cloneDeep from "lodash-es/cloneDeep";
 import flatMap from "lodash-es/flatMap";
@@ -147,23 +148,28 @@ const getLevelScopeNames = (
 
 /**
  * Per-collection, per-level data derived once from the (immutable) API response and cached, so the
- * render and selection paths never recompute it. All three maps are keyed by permission level:
- *
- * - `availableLevels` — the levels that are actually processable (read, plus any create/update/delete
- *   that carries a real action scope; see `isPermissionLevelActionable`). Used to disable read-only
- *   cells and to exclude them from every derivation / scope-building loop.
- * - `scopeNamesByLevel` — the backend scope names backing each level; a level checkbox is shown
- *   checked exactly when this set is fully contained in the granted scopes.
- * - `marginalScopeNamesByLevel` — the scopes a level contributes *beyond* View (its backing scopes
- *   minus read's). These fall away when the level is unchecked; View's are excluded so unticking a
- *   write level never clears the row's View box. When several levels share a management scope (e.g.
- *   Branding's create/update/delete all resolve to `internal_branding_preference_update`), their
- *   marginal sets overlap, so dropping one clears the shared capability and the siblings fall away
- *   together instead of a sibling immediately re-ticking the box that was just unchecked.
+ * render and selection paths never recompute it.
  */
 interface CollectionLevelMetadata {
+    /**
+     * Levels that are actually processable (read, plus any create/update/delete that carries a real
+     * action scope; see `isPermissionLevelActionable`). Used to disable read-only cells and to
+     * exclude them from every derivation / scope-building loop.
+     */
     availableLevels: GranularPermissionLevel[];
+    /**
+     * Backend scope names backing each level; a level checkbox is shown checked exactly when this
+     * set is fully contained in the granted scopes.
+     */
     scopeNamesByLevel: Record<GranularPermissionLevel, string[]>;
+    /**
+     * Scopes a level contributes *beyond* View (its backing scopes minus read's). These fall away
+     * when the level is unchecked; View's are excluded so unticking a write level never clears the
+     * row's View box. When several levels share a management scope (e.g. Branding's
+     * create/update/delete all resolve to `internal_branding_preference_update`), their marginal
+     * sets overlap, so dropping one clears the shared capability and the siblings fall away
+     * together instead of a sibling immediately re-ticking the box that was just unchecked.
+     */
     marginalScopeNamesByLevel: Record<GranularPermissionLevel, string[]>;
 }
 
@@ -218,14 +224,13 @@ const CreateConsoleRoleWizardPermissionsForm: FunctionComponent<CreateConsoleRol
     const enabledFeatureOverridesInConsoleRolePermissions: string[] = useSelector(
         (state: AppState) => state.config.ui.enabledFeatureOverridesInConsoleRolePermissions);
 
-    const disabledFeatures: string[] = useSelector((state: AppState) =>
-        state?.config?.ui?.features?.consoleSettings?.disabledFeatures);
-
     /**
      * Switches the permissions evaluation between the legacy and the granular mode.
      */
-    const useGranularConsolePermissions: boolean = !disabledFeatures?.includes(
-        ConsoleRolesOnboardingConstants.GRANULAR_CONSOLE_PERMISSIONS_FEATURE_KEY);
+    const useGranularConsolePermissions: boolean = isFeatureEnabled(
+        featureConfig?.consoleSettings,
+        ConsoleRolesOnboardingConstants.GRANULAR_CONSOLE_PERMISSIONS_FEATURE_KEY
+    );
 
     const [ expandedAccordions, setExpandedAccordions ] = useState<string[]>([]);
     const [ selectedPermissions, setSelectedPermissions ] = useState<SelectedPermissionsInterface>(initialValues || {
@@ -1287,13 +1292,19 @@ const CreateConsoleRoleWizardPermissionsForm: FunctionComponent<CreateConsoleRol
 
                         handlePermissionLevelChange(e, collection, selectedValue, type);
                     } }
-                    aria-label="text alignment"
+                    aria-label={ t("consoleSettings:roles.permissionLevels.toggleGroupAriaLabel") }
                     size="small"
                 >
-                    <ToggleButton value="read" aria-label="left aligned">
+                    <ToggleButton
+                        value="read"
+                        aria-label={ t("consoleSettings:roles.permissionLevels.toggleViewAriaLabel") }
+                    >
                         { t("consoleSettings:roles.permissionLevels.view") }
                     </ToggleButton>
-                    <ToggleButton value="write" aria-label="right aligned">
+                    <ToggleButton
+                        value="write"
+                        aria-label={ t("consoleSettings:roles.permissionLevels.toggleEditAriaLabel") }
+                    >
                         { t("consoleSettings:roles.permissionLevels.edit") }
                     </ToggleButton>
                 </ToggleButtonGroup>
@@ -1333,7 +1344,8 @@ const CreateConsoleRoleWizardPermissionsForm: FunctionComponent<CreateConsoleRol
                                         handleSelectAll(e, APIResourceCollectionTypes.TENANT);
                                     } }
                                     inputProps={ {
-                                        "aria-label": "Select all tenant permissions"
+                                        "aria-label":
+                                            t("consoleSettings:roles.permissionLevels.selectAllTenant")
                                     } }
                                 />
                             ) }
@@ -1355,7 +1367,13 @@ const CreateConsoleRoleWizardPermissionsForm: FunctionComponent<CreateConsoleRol
                         </AccordionSummary>
                         <AccordionDetails>
                             <TableContainer component={ Paper } elevation={ 0 }>
-                                <Table className="permissions-table" size="small" aria-label="tenant permissions table">
+                                <Table
+                                    className="permissions-table"
+                                    size="small"
+                                    aria-label={ t(
+                                        "consoleSettings:roles.permissionLevels.tenantTableAriaLabel"
+                                    ) as string }
+                                >
                                     { useGranularConsolePermissions &&
                                         renderGranularHeader(APIResourceCollectionTypes.TENANT) }
                                     <TableBody>
@@ -1385,8 +1403,12 @@ const CreateConsoleRoleWizardPermissionsForm: FunctionComponent<CreateConsoleRol
                                                                         )
                                                                     }
                                                                     inputProps={ {
-                                                                        "aria-label": `Select ${
-                                                                            collection.displayName } permission`
+                                                                        "aria-label":
+                                                                            t("consoleSettings:roles."
+                                                                                + "permissionLevels."
+                                                                                + "selectRowPermission", {
+                                                                                collection: collection.displayName
+                                                                            })
                                                                     } }
                                                                 />
                                                             ) }
@@ -1449,7 +1471,8 @@ const CreateConsoleRoleWizardPermissionsForm: FunctionComponent<CreateConsoleRol
                                     handleSelectAll(e, APIResourceCollectionTypes.ORGANIZATION);
                                 } }
                                 inputProps={ {
-                                    "aria-label": "Select all organization permissions"
+                                    "aria-label":
+                                        t("consoleSettings:roles.permissionLevels.selectAllOrganization")
                                 } }
                             />
                         ) }
@@ -1474,7 +1497,9 @@ const CreateConsoleRoleWizardPermissionsForm: FunctionComponent<CreateConsoleRol
                             <Table
                                 className="permissions-table"
                                 size="small"
-                                aria-label="organization permissions table"
+                                aria-label={ t(
+                                    "consoleSettings:roles.permissionLevels.organizationTableAriaLabel"
+                                ) as string }
                             >
                                 { useGranularConsolePermissions &&
                                     renderGranularHeader(APIResourceCollectionTypes.ORGANIZATION) }
@@ -1506,7 +1531,11 @@ const CreateConsoleRoleWizardPermissionsForm: FunctionComponent<CreateConsoleRol
                                                                 }
                                                                 inputProps={ {
                                                                     "aria-label":
-                                                                        `Select ${collection.displayName} permission`
+                                                                        t("consoleSettings:roles."
+                                                                            + "permissionLevels."
+                                                                            + "selectRowPermission", {
+                                                                            collection: collection.displayName
+                                                                        })
                                                                 } }
                                                             />
                                                         ) }
