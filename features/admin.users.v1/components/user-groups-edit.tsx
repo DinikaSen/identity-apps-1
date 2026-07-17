@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { FeatureAccessConfigInterface, useRequiredScopes } from "@wso2is/access-control";
 import { updateResources } from "@wso2is/admin.core.v1/api/bulk-operations";
 import { AppState } from "@wso2is/admin.core.v1/store";
 import { userstoresConfig } from "@wso2is/admin.extensions.v1/configs/userstores";
@@ -85,6 +86,19 @@ export const UserGroupsList: FunctionComponent<UserGroupsPropsInterface> = (
 
     const primaryUserStoreDomainName: string = useSelector((state: AppState) =>
         state?.config?.ui?.primaryUserStoreDomainName);
+
+    const groupsFeatureConfig: FeatureAccessConfigInterface = useSelector(
+        (state: AppState) => state?.config?.ui?.features?.groups);
+
+    const groupUpdateScopes: string[] = groupsFeatureConfig?.scopes?.update ?? [];
+    const hasGroupsUpdatePermission: boolean = useRequiredScopes(groupUpdateScopes);
+
+    /**
+     * Group memberships are updated through the SCIM2 Groups PATCH API, which requires
+     * group update permission. Hence, the section is read only if the user lacks that
+     * permission, in addition to the read only state passed down by the parent.
+     */
+    const isGroupsReadOnly: boolean = isReadOnly || !hasGroupsUpdatePermission;
 
     const { t } = useTranslation();
 
@@ -458,7 +472,7 @@ export const UserGroupsList: FunctionComponent<UserGroupsPropsInterface> = (
                 handleOpenAddNewGroupModal={ handleOpenAddNewGroupModal }
                 handleUserUpdate={ handleUserUpdate }
                 isLoading={ isLoading }
-                isReadOnly={ isReadOnly }
+                isReadOnly={ isGroupsReadOnly }
                 user={ user }
             />
             { addNewGroupModal() }

@@ -910,7 +910,8 @@
             "consoleSettings": {
                 "disabledFeatures": [
                     "consoleSettings.invitedExternalAdmins",
-                    "consoleSettings.privilegedUsers"
+                    "consoleSettings.privilegedUsers",
+                    "consoleSettings.useGranularConsolePermissions"
                 ],
                 "enabled": true,
                 "featureFlags": [],
