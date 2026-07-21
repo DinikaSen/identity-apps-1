@@ -271,12 +271,6 @@ export const PushAuthenticatorForm: FunctionComponent<PushAuthenticatorFormProps
 
     const isReadOnly: boolean = readOnly;
 
-    const {
-        data: pushDeviceMgtConfig,
-        isLoading: isPushDeviceMgtConfigLoading,
-        mutate: mutatePushDeviceMgtConfig
-    } = useGetPushDeviceMgtConfig();
-
     // Push device management settings are exposed as properties of the identity providers feature config.
     const identityProvidersFeatureConfig: FeatureAccessConfigInterface = useSelector(
         (state: AppState) => state?.config?.ui?.features?.identityProviders
@@ -296,6 +290,16 @@ export const PushAuthenticatorForm: FunctionComponent<PushAuthenticatorFormProps
     // Feature flag that gates the device registration notification UI sourced from the console deployment config.
     const isDeviceRegistrationNotificationsEnabled: boolean =
         Boolean(identityProvidersFeatureConfig?.properties?.pushDeviceRegistrationNotificationsEnabled);
+
+    // The push device management endpoint backs both feature sets, so only fetch it when either is enabled.
+    const shouldFetchPushDeviceMgtConfig: boolean =
+        isMultipleDeviceSupportEnabled || isDeviceRegistrationNotificationsEnabled;
+
+    const {
+        data: pushDeviceMgtConfig,
+        isLoading: isPushDeviceMgtConfigLoading,
+        mutate: mutatePushDeviceMgtConfig
+    } = useGetPushDeviceMgtConfig(shouldFetchPushDeviceMgtConfig);
 
     /**
      * Flattens and resolved form initial values and field metadata.
@@ -496,8 +500,18 @@ export const PushAuthenticatorForm: FunctionComponent<PushAuthenticatorFormProps
     const handleFormSubmit = (values: PushAuthenticatorFormInitialValuesInterface): void => {
         setIsSubmitting(true);
 
-        const deviceMgtConfig: PushDeviceMgtConfigInterface = getUpdatedPushDeviceMgtConfig(values);
         const authenticatorConfig: CommonAuthenticatorFormInitialValuesInterface = getUpdatedConfigurations(values);
+
+        // The device management config isn't fetched or editable when both features are disabled,
+        // so skip the update to avoid overwriting the server config with unfetched defaults.
+        if (!shouldFetchPushDeviceMgtConfig) {
+            onSubmit(authenticatorConfig);
+            setIsSubmitting(false);
+
+            return;
+        }
+
+        const deviceMgtConfig: PushDeviceMgtConfigInterface = getUpdatedPushDeviceMgtConfig(values);
 
         updatePushDeviceMgtConfig(deviceMgtConfig)
             .then(() => {
