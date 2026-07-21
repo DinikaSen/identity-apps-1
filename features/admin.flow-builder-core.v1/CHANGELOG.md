@@ -1,5 +1,11 @@
 # @wso2is/admin.flow-builder-core.v1
 
+## 0.10.223
+
+### Patch Changes
+
+- [#10551](https://github.com/wso2/identity-apps/pull/10551) [`1f92355a3f9d099148c1595b0e5c05b1c247e44c`](https://github.com/wso2/identity-apps/commit/1f92355a3f9d099148c1595b0e5c05b1c247e44c) Thanks [@hwupathum](https://github.com/hwupathum)! - Remove policy from the steps
+
 ## 0.10.222
 
 ### Patch Changes
