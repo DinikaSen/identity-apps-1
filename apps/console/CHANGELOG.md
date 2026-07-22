@@ -1,5 +1,23 @@
 # @wso2is/console
 
+## 4.14.3
+
+### Patch Changes
+
+- [#10563](https://github.com/wso2/identity-apps/pull/10563) [`44ee922ff1176b4a13677587a78210af778ad063`](https://github.com/wso2/identity-apps/commit/44ee922ff1176b4a13677587a78210af778ad063) Thanks [@mpmadhavig](https://github.com/mpmadhavig)! - Fix duplicate "Danger Zone" header on the user edit page.
+
+* [#10562](https://github.com/wso2/identity-apps/pull/10562) [`e4c3e08ba107af7e42e4fcf1b4b6b640bb4e4aa4`](https://github.com/wso2/identity-apps/commit/e4c3e08ba107af7e42e4fcf1b4b6b640bb4e4aa4) Thanks [@Lakshan-Banneheke](https://github.com/Lakshan-Banneheke)! - Gate banner upgrade CTA behind upgradeButtonEnabled config
+
+- [#10550](https://github.com/wso2/identity-apps/pull/10550) [`613d86bc4913d815da3640a94d6d319bc7881ec2`](https://github.com/wso2/identity-apps/commit/613d86bc4913d815da3640a94d6d319bc7881ec2) Thanks [@bhagyasakalanka](https://github.com/bhagyasakalanka)! - Add agent analytics to the Moesif dashboards and surface the fresh-start data retention note on the advanced analytics banner
+
+- Updated dependencies [[`44ee922ff1176b4a13677587a78210af778ad063`](https://github.com/wso2/identity-apps/commit/44ee922ff1176b4a13677587a78210af778ad063), [`e4c3e08ba107af7e42e4fcf1b4b6b640bb4e4aa4`](https://github.com/wso2/identity-apps/commit/e4c3e08ba107af7e42e4fcf1b4b6b640bb4e4aa4), [`613d86bc4913d815da3640a94d6d319bc7881ec2`](https://github.com/wso2/identity-apps/commit/613d86bc4913d815da3640a94d6d319bc7881ec2)]:
+  - @wso2is/admin.users.v1@2.38.46
+  - @wso2is/admin.feature-gate.v1@1.9.10
+  - @wso2is/admin.subscription.v1@1.5.229
+  - @wso2is/i18n@2.44.1
+  - @wso2is/admin.analytics.v1@0.0.14
+  - @wso2is/admin.onboarding.v1@1.0.93
+
 ## 4.14.2
 
 ### Patch Changes
