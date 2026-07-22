@@ -1017,9 +1017,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                         hasUsersDeletePermissions
                         || hasUsersUpdatePermissions
                     ) ? (
-                            <DangerZoneGroup
-                                sectionHeader={ t("user:editUser.dangerZoneGroup.header") }
-                            >
+                            <>
                                 <UserImpersonationAction
                                     user={ user }
                                     isLocked={ accountLocked }
@@ -1178,7 +1176,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                                         ) }
                                     </DangerZoneGroup>
                                 ) }
-                            </DangerZoneGroup>
+                            </>
                         ) : null }
             </>
         );
