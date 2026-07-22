@@ -49,7 +49,7 @@ const FeatureLockedBanner: FunctionComponent<FeatureLockedBannerPropsInterface> 
     const associatedTenants: unknown[] = useSelector((state: AppState) => state?.auth?.tenants);
     const upgradeButtonEnabled: boolean = useSelector(
         (state: AppState): boolean =>
-            (state?.config?.deployment?.extensions as { upgradeButtonEnabled?: boolean })?.upgradeButtonEnabled === true
+            state?.config?.deployment?.extensions?.upgradeButtonEnabled === true
     );
     const contactUsURL: string = useSelector(
         (state: AppState): string =>

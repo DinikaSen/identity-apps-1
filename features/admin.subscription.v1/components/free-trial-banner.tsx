@@ -68,7 +68,7 @@ const FreeTrialBanner: FunctionComponent<FreeTrialBannerPropsInterface> = (
     );
     const upgradeButtonEnabled: boolean = useSelector(
         (state: AppState): boolean =>
-            (state?.config?.deployment?.extensions as { upgradeButtonEnabled?: boolean })?.upgradeButtonEnabled === true
+            state?.config?.deployment?.extensions?.upgradeButtonEnabled === true
     );
     const contactUsURL: string = useSelector(
         (state: AppState): string =>
