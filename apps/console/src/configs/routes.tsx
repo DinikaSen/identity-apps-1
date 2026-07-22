@@ -91,6 +91,16 @@ export const getAppViewRoutes = (): RouteInterface[] => {
     const isMcpServersFeatureEnabled: boolean =
         window["AppUtils"]?.getConfig()?.ui?.features?.mcpServers?.enabled;
 
+    const isInsightsFeatureEnabled: boolean =
+        window["AppUtils"]?.getConfig()?.ui?.features?.insights?.enabled === true;
+    const isAnalyticsFeatureEnabled: boolean =
+        window["AppUtils"]?.getConfig()?.ui?.features?.analytics?.enabled === true;
+    const isAnalyticsSettingsEnabled: boolean =
+        (window["AppUtils"]?.getConfig()?.extensions?.analytics as Record<string, Record<string, unknown>>)
+            ?.collectorKey?.settingsEnabled === true;
+    const showAnalyticsSettingsAsTab: boolean =
+        isAnalyticsFeatureEnabled && isAnalyticsSettingsEnabled && !isInsightsFeatureEnabled;
+
     const defaultRoutes: RouteInterface[] = [
         {
             category: "extensions:manage.sidePanel.categories.userManagement",
@@ -1375,6 +1385,9 @@ export const getAppViewRoutes = (): RouteInterface[] => {
             showOnSidePanel: true
         },
         {
+            category: showAnalyticsSettingsAsTab
+                ? "extensions:develop.sidePanel.categories.monitor"
+                : undefined,
             component: lazy(() =>
                 import(
                     "@wso2is/admin.analytics.v1/pages/analytics-settings-page"
@@ -1385,11 +1398,11 @@ export const getAppViewRoutes = (): RouteInterface[] => {
                 icon: <LightbulbOnIcon fill="black" className="icon" />
             },
             id: "insightsSettings",
-            name: "Insights Settings",
+            name: showAnalyticsSettingsAsTab ? "Insights" : "Insights Settings",
             order: 24,
             path: AppConstants.getPaths().get("INSIGHTS_SETTINGS"),
             protected: true,
-            showOnSidePanel: false
+            showOnSidePanel: showAnalyticsSettingsAsTab
         },
         {
             category: "extensions:manage.sidePanel.categories.monitor",

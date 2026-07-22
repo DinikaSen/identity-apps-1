@@ -767,8 +767,8 @@
                 {% else %} true,
                 {% endif %}
                 "scopes": {
-                    {% if console.analytics.scopes is defined %}
-                    {% for operation, scopes in console.analytics.scopes.items() %}
+                    {% if console.analytics.moesif.scopes is defined %}
+                    {% for operation, scopes in console.analytics.moesif.scopes.items() %}
                     "{{ operation }}": [
                         {% for scope in scopes %}
                             "{{ scope }}"{{ "," if not loop.last }}
