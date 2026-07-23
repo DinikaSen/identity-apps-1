@@ -1,5 +1,14 @@
 # @wso2is/admin.users.v1
 
+## 2.38.47
+
+### Patch Changes
+
+- [#10569](https://github.com/wso2/identity-apps/pull/10569) [`887ca67003e369ce8f8e3f1d1b5274a9f8b96cee`](https://github.com/wso2/identity-apps/commit/887ca67003e369ce8f8e3f1d1b5274a9f8b96cee) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Improve the group assigning section
+
+- Updated dependencies [[`54cf76e24c1565465957540ce5073a9a9a764532`](https://github.com/wso2/identity-apps/commit/54cf76e24c1565465957540ce5073a9a9a764532), [`a4dc83fb8f0d905443d9091b865dbe4b4e65da08`](https://github.com/wso2/identity-apps/commit/a4dc83fb8f0d905443d9091b865dbe4b4e65da08)]:
+  - @wso2is/admin.core.v1@2.58.1
+
 ## 2.38.46
 
 ### Patch Changes
